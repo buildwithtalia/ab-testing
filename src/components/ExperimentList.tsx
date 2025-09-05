@@ -27,13 +27,19 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
     }
   };
 
-  const formatDate = (date?: Date) => {
+  const formatDate = (date?: Date | string) => {
     if (!date) return 'N/A';
+    
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) return 'N/A';
+    
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
-    }).format(date);
+    }).format(dateObj);
   };
 
   const getExperimentMetrics = (experiment: Experiment) => {
@@ -49,7 +55,6 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
   };
 
   const canStart = (experiment: Experiment) => experiment.status === 'draft';
-  const canPause = (experiment: Experiment) => experiment.status === 'running';
   const canComplete = (experiment: Experiment) => experiment.status === 'running';
 
   return (

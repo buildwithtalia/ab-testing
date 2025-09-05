@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, TrendingUp, TrendingDown, AlertCircle, CheckCircle, BarChart3 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Experiment } from '../types/experiment';
 
 interface ExperimentResultsProps {
@@ -80,13 +80,19 @@ export const ExperimentResults: React.FC<ExperimentResultsProps> = ({
     }
   };
 
-  const formatDate = (date?: Date) => {
+  const formatDate = (date?: Date | string) => {
     if (!date) return 'N/A';
+    
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) return 'N/A';
+    
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
-    }).format(date);
+    }).format(dateObj);
   };
 
   return (

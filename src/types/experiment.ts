@@ -12,10 +12,10 @@ export interface Experiment {
   description: string;
   status: 'draft' | 'running' | 'completed';
   variants: Variant[];
-  startDate?: Date;
-  endDate?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  startDate?: Date | string;
+  endDate?: Date | string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface ExperimentResults {

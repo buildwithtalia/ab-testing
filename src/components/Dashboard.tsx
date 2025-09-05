@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, BarChart3, TrendingUp, Users } from 'lucide-react';
 import { Experiment } from '../types/experiment';
 import { ExperimentList } from './ExperimentList';
 import { ExperimentForm } from './ExperimentForm';
 import { ExperimentResults } from './ExperimentResults';
+import { apiService } from '../services/api';
 
 const mockExperiments: Experiment[] = [
   {
@@ -49,29 +50,69 @@ const mockExperiments: Experiment[] = [
 ];
 
 export const Dashboard: React.FC = () => {
-  const [experiments, setExperiments] = useState<Experiment[]>(mockExperiments);
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [experiments, setExperiments] = useState<Experiment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedExperiment, setSelectedExperiment] = useState<Experiment | null>(null);
   const [view, setView] = useState<'list' | 'create' | 'results'>('list');
 
-  const handleCreateExperiment = (experiment: Omit<Experiment, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newExperiment: Experiment = {
-      ...experiment,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    setExperiments([...experiments, newExperiment]);
-    setView('list');
-    setShowCreateForm(false);
+  // Load experiments from API
+  useEffect(() => {
+    loadExperiments();
+  }, []);
+
+  const loadExperiments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await apiService.getAllExperiments();
+      setExperiments(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load experiments');
+      // Fallback to mock data if API fails
+      console.warn('API failed, using mock data:', err);
+      setExperiments(mockExperiments);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleUpdateExperimentStatus = (id: string, status: Experiment['status']) => {
-    setExperiments(experiments.map(exp => 
-      exp.id === id 
-        ? { ...exp, status, updatedAt: new Date(), ...(status === 'running' ? { startDate: new Date() } : status === 'completed' ? { endDate: new Date() } : {}) }
-        : exp
-    ));
+  const handleCreateExperiment = async (experiment: Omit<Experiment, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      const response = await apiService.createExperiment({
+        name: experiment.name,
+        description: experiment.description,
+        variants: experiment.variants.map(v => ({
+          name: v.name,
+          trafficPercentage: v.trafficPercentage
+        }))
+      });
+      if (response.success) {
+        await loadExperiments(); // Refresh the list
+        setView('list');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create experiment');
+    }
+  };
+
+  const handleUpdateExperimentStatus = async (id: string, status: Experiment['status']) => {
+    try {
+      let response;
+      if (status === 'running') {
+        response = await apiService.startExperiment(id);
+      } else if (status === 'completed') {
+        response = await apiService.stopExperiment(id);
+      } else {
+        response = await apiService.updateExperimentStatus(id, status);
+      }
+      
+      if (response.success) {
+        await loadExperiments(); // Refresh the list
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update experiment status');
+    }
   };
 
   const handleViewResults = (experiment: Experiment) => {
@@ -101,6 +142,17 @@ export const Dashboard: React.FC = () => {
     return totalVisitors > 0 ? ((totalConversions / totalVisitors) * 100).toFixed(2) : '0';
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading experiments...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container">
@@ -118,6 +170,17 @@ export const Dashboard: React.FC = () => {
               New Experiment
             </button>
           </div>
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600">⚠️ {error}</p>
+              <button 
+                onClick={loadExperiments}
+                className="text-red-600 underline text-sm mt-2"
+              >
+                Retry
+              </button>
+            </div>
+          )}
         </header>
 
         {view === 'list' && (
