@@ -825,21 +825,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/experiments/:id",
+									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"experiments",
-										":id"
-									],
-									"variable": [
-										{
-											"id": "b5b6f356-60b9-4625-bce7-91f745aa0575",
-											"key": "id",
-											"value": "exp_123",
-											"description": "(Required) Experiment ID"
-										}
+										"exp_b0qj4lqcv"
 									]
 								},
 								"description": "Delete an experiment by ID"
