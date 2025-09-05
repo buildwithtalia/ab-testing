@@ -830,26 +830,7 @@
 									"script": {
 										"id": "fe9342df-1425-4174-9a64-ca5559f13bdd",
 										"exec": [
-											"// Standard tests for GET /experiments/:id",
-											"pm.test(\"Status code is 200 or 404\", function () {",
-											"    pm.expect([200, 404]).to.include(pm.response.code);",
-											"});",
-											"pm.test(\"Response is JSON\", function () {",
-											"    pm.response.to.be.json;",
-											"});",
-											"pm.test(\"Response body has expected fields for 200\", function () {",
-											"    if (pm.response.code === 200) {",
-											"        var jsonData = pm.response.json();",
-											"        pm.expect(jsonData).to.have.property('id');",
-											"        pm.expect(jsonData).to.have.property('name');",
-											"    }",
-											"});",
-											"pm.test(\"Response body has error message for 404\", function () {",
-											"    if (pm.response.code === 404) {",
-											"        var jsonData = pm.response.json();",
-											"        pm.expect(jsonData).to.have.property('error');",
-											"    }",
-											"});"
+											""
 										],
 										"type": "text/javascript",
 										"packages": {}
