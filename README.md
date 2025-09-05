@@ -44,8 +44,8 @@ A modern, responsive React application for managing and analyzing A/B tests. Bui
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd ab-testing-dashboard
+git clone https://github.com/buildwithtalia/ab-testing.git
+cd ab-testing
 ```
 
 2. Install dependencies:
