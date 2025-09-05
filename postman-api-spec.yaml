@@ -1,0 +1,563 @@
+openapi: 3.0.3
+info:
+  title: AB Testing API
+  description: REST API for managing A/B testing experiments
+  version: 1.0.0
+  contact:
+    name: AB Testing System
+servers:
+  - url: http://localhost:3002/api
+    description: Development server
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check endpoint
+      description: Returns the health status of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "OK"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2023-12-01T10:00:00Z"
+
+  /experiments:
+    get:
+      tags:
+        - Experiments
+      summary: Get all experiments
+      description: Retrieve a list of all experiments
+      responses:
+        '200':
+          description: List of experiments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experiment'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Experiments
+      summary: Create a new experiment
+      description: Create a new A/B testing experiment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExperimentRequest'
+            examples:
+              simple_experiment:
+                summary: Simple A/B test
+                value:
+                  name: "Button Color Test"
+                  description: "Testing different button colors for conversion"
+                  variants:
+                    - name: "control"
+                      weight: 50
+                      config:
+                        buttonColor: "#007bff"
+                    - name: "red_button"
+                      weight: 50
+                      config:
+                        buttonColor: "#dc3545"
+                  targetingRules:
+                    - type: "percentage"
+                      value: 100
+      responses:
+        '201':
+          description: Experiment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /experiments/{id}:
+    get:
+      tags:
+        - Experiments
+      summary: Get experiment by ID
+      description: Retrieve a specific experiment by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      responses:
+        '200':
+          description: Experiment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Experiments
+      summary: Update experiment
+      description: Update an existing experiment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateExperimentRequest'
+      responses:
+        '200':
+          description: Experiment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Experiments
+      summary: Delete experiment
+      description: Delete an experiment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      responses:
+        '204':
+          description: Experiment deleted successfully
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /experiments/{id}/assign:
+    post:
+      tags:
+        - Experiments
+      summary: Assign user to variant
+      description: Assign a user to a specific variant in an experiment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignVariantRequest'
+            examples:
+              assign_user:
+                summary: Assign user to experiment
+                value:
+                  userId: "user_456"
+                  attributes:
+                    country: "US"
+                    premium: true
+      responses:
+        '200':
+          description: User assigned to variant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAssignment'
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /experiments/{id}/track:
+    post:
+      tags:
+        - Experiments
+      summary: Track conversion event
+      description: Track a conversion event for an experiment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackEventRequest'
+            examples:
+              track_conversion:
+                summary: Track button click conversion
+                value:
+                  userId: "user_456"
+                  eventType: "conversion"
+                  value: 1
+                  metadata:
+                    buttonClicked: "cta_main"
+      responses:
+        '200':
+          description: Event tracked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Event tracked successfully"
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /experiments/{id}/results:
+    get:
+      tags:
+        - Analytics
+      summary: Get experiment results
+      description: Retrieve statistical results and analytics for an experiment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Experiment ID
+          schema:
+            type: string
+            example: "exp_123"
+      responses:
+        '200':
+          description: Experiment results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentResults'
+        '404':
+          description: Experiment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Experiment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "exp_123"
+        name:
+          type: string
+          example: "Button Color Test"
+        description:
+          type: string
+          example: "Testing different button colors for conversion"
+        status:
+          type: string
+          enum: [draft, active, paused, completed]
+          example: "active"
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        targetingRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetingRule'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:00:00Z"
+        startDate:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:00:00Z"
+        endDate:
+          type: string
+          format: date-time
+          example: "2023-12-31T23:59:59Z"
+
+    Variant:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "control"
+        weight:
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 50
+        config:
+          type: object
+          additionalProperties: true
+          example:
+            buttonColor: "#007bff"
+
+    TargetingRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [percentage, attribute, custom]
+          example: "percentage"
+        value:
+          oneOf:
+            - type: number
+            - type: string
+            - type: object
+          example: 100
+        conditions:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+
+    CreateExperimentRequest:
+      type: object
+      required:
+        - name
+        - variants
+      properties:
+        name:
+          type: string
+          example: "Button Color Test"
+        description:
+          type: string
+          example: "Testing different button colors for conversion"
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+          minItems: 2
+        targetingRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetingRule'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    UpdateExperimentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, paused, completed]
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        targetingRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetingRule'
+        endDate:
+          type: string
+          format: date-time
+
+    AssignVariantRequest:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          example: "user_456"
+        attributes:
+          type: object
+          additionalProperties: true
+          example:
+            country: "US"
+            premium: true
+
+    VariantAssignment:
+      type: object
+      properties:
+        experimentId:
+          type: string
+          example: "exp_123"
+        userId:
+          type: string
+          example: "user_456"
+        variant:
+          $ref: '#/components/schemas/Variant'
+        assignedAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:00:00Z"
+
+    TrackEventRequest:
+      type: object
+      required:
+        - userId
+        - eventType
+      properties:
+        userId:
+          type: string
+          example: "user_456"
+        eventType:
+          type: string
+          example: "conversion"
+        value:
+          type: number
+          example: 1
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            buttonClicked: "cta_main"
+
+    ExperimentResults:
+      type: object
+      properties:
+        experimentId:
+          type: string
+          example: "exp_123"
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariantResults'
+        overallResults:
+          $ref: '#/components/schemas/OverallResults'
+        significance:
+          type: object
+          properties:
+            isSignificant:
+              type: boolean
+              example: true
+            pValue:
+              type: number
+              example: 0.032
+            confidenceInterval:
+              type: number
+              example: 95
+
+    VariantResults:
+      type: object
+      properties:
+        variantName:
+          type: string
+          example: "control"
+        participants:
+          type: number
+          example: 1000
+        conversions:
+          type: number
+          example: 85
+        conversionRate:
+          type: number
+          example: 8.5
+        confidence:
+          type: number
+          example: 95
+        lift:
+          type: number
+          example: 0
+        isWinner:
+          type: boolean
+          example: false
+
+    OverallResults:
+      type: object
+      properties:
+        totalParticipants:
+          type: number
+          example: 2000
+        totalConversions:
+          type: number
+          example: 185
+        duration:
+          type: number
+          description: Duration in days
+          example: 14
+        status:
+          type: string
+          example: "active"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Experiment not found"
+        message:
+          type: string
+          example: "The requested experiment could not be found"
+        code:
+          type: number
+          example: 404
