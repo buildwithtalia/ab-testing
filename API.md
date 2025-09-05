@@ -4,7 +4,7 @@ This document describes the REST API endpoints for managing A/B testing experime
 
 ## Base URL
 ```
-http://localhost:3001/api
+http://localhost:3002/api
 ```
 
 ## Authentication
