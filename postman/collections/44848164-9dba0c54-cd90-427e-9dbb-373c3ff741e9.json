@@ -834,6 +834,32 @@
 						},
 						{
 							"name": "Delete experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fe9342df-1425-4174-9a64-ca5559f13bdd",
+										"exec": [
+											"// Standard tests for DELETE /experiments/:id",
+											"pm.test(\"Status code is 204 or 404\", function () {",
+											"    pm.expect([204, 404]).to.include(pm.response.code);",
+											"});",
+											"pm.test(\"Response is empty for 204\", function () {",
+											"    if (pm.response.code === 204) {",
+											"        pm.expect(pm.response.text()).to.eql(\"\");",
+											"    }",
+											"});",
+											"pm.test(\"Response is JSON for 404\", function () {",
+											"    if (pm.response.code === 404) {",
+											"        pm.response.to.be.json;",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "44848164-7706b990-c852-4417-9df2-cd5ccd2c6a3f",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
