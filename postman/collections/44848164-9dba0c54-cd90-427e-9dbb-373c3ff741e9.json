@@ -557,21 +557,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/experiments/:id",
+									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"experiments",
-										":id"
-									],
-									"variable": [
-										{
-											"id": "96eff95a-d413-40db-b0e1-4102f9d096e2",
-											"key": "id",
-											"value": "exp_123",
-											"description": "(Required) Experiment ID"
-										}
+										"exp_b0qj4lqcv"
 									]
 								},
 								"description": "Retrieve a specific experiment by its ID"
