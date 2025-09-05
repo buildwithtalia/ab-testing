@@ -1168,6 +1168,49 @@
 							"cookie": [],
 							"responseTime": null,
 							"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+						},
+						{
+							"id": "44848164-f57bc08e-7a42-4118-bd51-04143588c85f",
+							"name": "API tests added",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
 						}
 					]
 				}
