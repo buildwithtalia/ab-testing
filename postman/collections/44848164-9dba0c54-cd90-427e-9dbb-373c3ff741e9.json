@@ -253,6 +253,29 @@
 							"item": [
 								{
 									"name": "Track conversion event",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bf9f13f0-76b1-4d6a-93a4-2eac2df8a853",
+												"exec": [
+													"// Standard tests for POST /experiments/:id/track",
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													"pm.test(\"Response is JSON\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"pm.test(\"Response body has success field\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).to.have.property('success');",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"id": "44848164-4f10ab54-29bb-4713-930c-477a82e6049c",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -291,7 +314,6 @@
 											],
 											"variable": [
 												{
-													"id": "61a821e7-4270-4570-9e32-66971bc1ef44",
 													"key": "id",
 													"value": "exp_123",
 													"description": "(Required) Experiment ID"
