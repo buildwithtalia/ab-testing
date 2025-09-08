@@ -1,0 +1,1294 @@
+{
+	"info": {
+		"_postman_id": "44848164-9dba0c54-cd90-427e-9dbb-373c3ff741e9",
+		"name": "AB Testing API",
+		"description": "REST API for managing A/B testing experiments\n\nContact Support:\n Name: AB Testing System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health check endpoint",
+					"id": "44848164-c37167ea-f71e-4f59-84ec-466b8331007b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Returns the health status of the API"
+					},
+					"response": [
+						{
+							"id": "44848164-c597b586-855f-47f2-96d5-f9fe6d33519f",
+							"name": "API is healthy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"status\": \"OK\",\n  \"timestamp\": \"2023-12-01T10:00:00Z\"\n}"
+						}
+					]
+				}
+			],
+			"id": "44848164-1ec8e4ac-4242-479c-9d03-c28e366b5987"
+		},
+		{
+			"name": "experiments",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "assign",
+							"item": [
+								{
+									"name": "Assign user to variant",
+									"id": "44848164-7fd26d2f-291a-40ac-b520-37d5732c4bfc",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"assign"
+											],
+											"variable": [
+												{
+													"id": "43016327-10b1-42ba-844b-c71eae3c5597",
+													"key": "id",
+													"value": "exp_123",
+													"description": "(Required) Experiment ID"
+												}
+											]
+										},
+										"description": "Assign a user to a specific variant in an experiment"
+									},
+									"response": [
+										{
+											"id": "44848164-1bb7e515-a9c2-47b0-8dc7-80c27c484f66",
+											"name": "User assigned to variant",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/assign",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"assign"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"experimentId\": \"exp_123\",\n  \"userId\": \"user_456\",\n  \"variant\": {\n    \"name\": \"control\",\n    \"weight\": 50,\n    \"config\": {\n      \"buttonColor\": \"#007bff\"\n    }\n  },\n  \"assignedAt\": \"2023-12-01T10:00:00Z\"\n}"
+										},
+										{
+											"id": "44848164-74b7e68b-61d4-4fa4-928a-0957a076fa3b",
+											"name": "Experiment not found",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/assign",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"assign"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+										}
+									]
+								}
+							],
+							"id": "44848164-a92247e8-4a67-4f17-a942-ebc8dc4a643f"
+						},
+						{
+							"name": "track",
+							"item": [
+								{
+									"name": "Track conversion event",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bf9f13f0-76b1-4d6a-93a4-2eac2df8a853",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "44848164-4f10ab54-29bb-4713-930c-477a82e6049c",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"eventType\": \"conversion\",\n  \"value\": 1,\n  \"metadata\": {\n    \"buttonClicked\": \"cta_main\"\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/track",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"track"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "exp_123",
+													"description": "(Required) Experiment ID"
+												}
+											]
+										},
+										"description": "Track a conversion event for an experiment"
+									},
+									"response": [
+										{
+											"id": "44848164-66f84527-8642-4ff0-83e5-75ff4dee7963",
+											"name": "Event tracked successfully",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"user_456\",\n  \"eventType\": \"conversion\",\n  \"value\": 1,\n  \"metadata\": {\n    \"buttonClicked\": \"cta_main\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/track",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"track"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"success\": true,\n  \"message\": \"Event tracked successfully\"\n}"
+										},
+										{
+											"id": "44848164-0ad48798-8b88-4449-aa25-d2165220d9c7",
+											"name": "Experiment not found",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"user_456\",\n  \"eventType\": \"conversion\",\n  \"value\": 1,\n  \"metadata\": {\n    \"buttonClicked\": \"cta_main\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/track",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"track"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+										}
+									]
+								}
+							],
+							"id": "44848164-42285454-5668-4edc-8bfb-1f9fee8ca743"
+						},
+						{
+							"name": "results",
+							"item": [
+								{
+									"name": "Get experiment results",
+									"id": "44848164-e091b62c-55e3-4a2b-a5e4-b1e638935de5",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/results",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"results"
+											],
+											"variable": [
+												{
+													"id": "77585369-550d-49dd-baa9-6724d04b6a69",
+													"key": "id",
+													"value": "exp_123",
+													"description": "(Required) Experiment ID"
+												}
+											]
+										},
+										"description": "Retrieve statistical results and analytics for an experiment"
+									},
+									"response": [
+										{
+											"id": "44848164-0382b3cd-c059-474d-94b2-04a7add828a0",
+											"name": "Experiment results",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/results",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"results"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"experimentId\": \"exp_123\",\n  \"variants\": [\n    {\n      \"variantName\": \"control\",\n      \"participants\": 1000,\n      \"conversions\": 85,\n      \"conversionRate\": 8.5,\n      \"confidence\": 95,\n      \"lift\": 0,\n      \"isWinner\": false\n    },\n    {\n      \"variantName\": \"control\",\n      \"participants\": 1000,\n      \"conversions\": 85,\n      \"conversionRate\": 8.5,\n      \"confidence\": 95,\n      \"lift\": 0,\n      \"isWinner\": false\n    }\n  ],\n  \"overallResults\": {\n    \"totalParticipants\": 2000,\n    \"totalConversions\": 185,\n    \"duration\": 14,\n    \"status\": \"active\"\n  },\n  \"significance\": {\n    \"isSignificant\": true,\n    \"pValue\": 0.032,\n    \"confidenceInterval\": 95\n  }\n}"
+										},
+										{
+											"id": "44848164-39b9a967-f956-4c8c-be83-88a9bf2a6852",
+											"name": "Experiment not found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/results",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"results"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+										}
+									]
+								}
+							],
+							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe"
+						},
+						{
+							"name": "Get experiment by ID",
+							"id": "44848164-a5d8afc0-6989-4378-b9d2-8133ac8cf083",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										"exp_b0qj4lqcv"
+									]
+								},
+								"description": "Retrieve a specific experiment by its ID"
+							},
+							"response": [
+								{
+									"id": "44848164-4373a745-9238-42ce-9def-ec930d33d96f",
+									"name": "Experiment found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"id\": \"exp_123\",\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"status\": \"active\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 5406.448534006107,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 9737.649033849912,\n          \"key_1\": 3973,\n          \"key_2\": true,\n          \"key_3\": 5598\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 8877.374895683886,\n      \"conditions\": [\n        {\n          \"key_0\": 6605\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 461.17992625095303,\n          \"key_2\": 2178,\n          \"key_3\": 9113\n        }\n      ]\n    }\n  ],\n  \"createdAt\": \"2023-12-01T10:00:00Z\",\n  \"updatedAt\": \"2023-12-01T10:00:00Z\",\n  \"startDate\": \"2023-12-01T10:00:00Z\",\n  \"endDate\": \"2023-12-31T23:59:59Z\"\n}"
+								},
+								{
+									"id": "44848164-dbc30044-dd3e-46fa-9f96-b3978f170b0d",
+									"name": "Experiment not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								}
+							]
+						},
+						{
+							"name": "Update experiment",
+							"id": "44848164-f23d3114-9827-41be-b8e3-0579a2eb02aa",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 1573.311703527943,\n      \"conditions\": [\n        {\n          \"key_0\": 1590\n        },\n        {\n          \"key_0\": 7367.626066875317,\n          \"key_1\": 1348,\n          \"key_2\": 7977\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 2204.0672166519316,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 1533\n        }\n      ]\n    }\n  ],\n  \"endDate\": \"1983-02-24T22:49:18.869Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id"
+									],
+									"variable": [
+										{
+											"id": "66692919-5518-49a1-80cc-b8aff0bb71f3",
+											"key": "id",
+											"value": "exp_123",
+											"description": "(Required) Experiment ID"
+										}
+									]
+								},
+								"description": "Update an existing experiment"
+							},
+							"response": [
+								{
+									"id": "44848164-4740a607-65d4-4cfd-8e2b-4d5e049edd52",
+									"name": "Experiment updated successfully",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 1573.311703527943,\n      \"conditions\": [\n        {\n          \"key_0\": 1590\n        },\n        {\n          \"key_0\": 7367.626066875317,\n          \"key_1\": 1348,\n          \"key_2\": 7977\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 2204.0672166519316,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 1533\n        }\n      ]\n    }\n  ],\n  \"endDate\": \"1983-02-24T22:49:18.869Z\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"id\": \"exp_123\",\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"status\": \"active\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 5406.448534006107,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 9737.649033849912,\n          \"key_1\": 3973,\n          \"key_2\": true,\n          \"key_3\": 5598\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 8877.374895683886,\n      \"conditions\": [\n        {\n          \"key_0\": 6605\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 461.17992625095303,\n          \"key_2\": 2178,\n          \"key_3\": 9113\n        }\n      ]\n    }\n  ],\n  \"createdAt\": \"2023-12-01T10:00:00Z\",\n  \"updatedAt\": \"2023-12-01T10:00:00Z\",\n  \"startDate\": \"2023-12-01T10:00:00Z\",\n  \"endDate\": \"2023-12-31T23:59:59Z\"\n}"
+								},
+								{
+									"id": "44848164-89c8ad4e-f94b-4e04-b645-aac56eaff395",
+									"name": "Experiment not found",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 1573.311703527943,\n      \"conditions\": [\n        {\n          \"key_0\": 1590\n        },\n        {\n          \"key_0\": 7367.626066875317,\n          \"key_1\": 1348,\n          \"key_2\": 7977\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 2204.0672166519316,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 1533\n        }\n      ]\n    }\n  ],\n  \"endDate\": \"1983-02-24T22:49:18.869Z\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fe9342df-1425-4174-9a64-ca5559f13bdd",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "44848164-7706b990-c852-4417-9df2-cd5ccd2c6a3f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										"exp_b0qj4lqcv"
+									]
+								},
+								"description": "Delete an experiment by ID"
+							},
+							"response": [
+								{
+									"id": "44848164-434984ce-e5ef-4576-b4d3-a855572a5c06",
+									"name": "Experiment deleted successfully",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"responseTime": null,
+									"body": ""
+								},
+								{
+									"id": "44848164-5326868f-8dd2-4170-b8b1-8a9acb8cb367",
+									"name": "Experiment not found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								}
+							]
+						}
+					],
+					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633"
+				},
+				{
+					"name": "Get all experiments",
+					"id": "44848164-2dc4ed9f-f58d-4a6b-9e58-e3cf2bf38d6e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/experiments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments"
+							]
+						},
+						"description": "Retrieve a list of all experiments"
+					},
+					"response": [
+						{
+							"id": "44848164-b7af5dce-eb33-4d30-840b-565832ae525d",
+							"name": "List of experiments",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "[\n  {\n    \"id\": \"exp_123\",\n    \"name\": \"Button Color Test\",\n    \"description\": \"Testing different button colors for conversion\",\n    \"status\": \"active\",\n    \"variants\": [\n      {\n        \"name\": \"control\",\n        \"weight\": 50,\n        \"config\": {\n          \"buttonColor\": \"#007bff\"\n        }\n      },\n      {\n        \"name\": \"control\",\n        \"weight\": 50,\n        \"config\": {\n          \"buttonColor\": \"#007bff\"\n        }\n      }\n    ],\n    \"targetingRules\": [\n      {\n        \"type\": \"percentage\",\n        \"value\": 8472.992644330456,\n        \"conditions\": [\n          {\n            \"key_0\": 3221\n          },\n          {\n            \"key_0\": 5163.603302520604\n          }\n        ]\n      },\n      {\n        \"type\": \"percentage\",\n        \"value\": 8151.497706427879,\n        \"conditions\": [\n          {\n            \"key_0\": 5651.562814879614,\n            \"key_1\": 6992,\n            \"key_2\": \"string\",\n            \"key_3\": \"string\"\n          },\n          {\n            \"key_0\": \"string\",\n            \"key_1\": 191\n          }\n        ]\n      }\n    ],\n    \"createdAt\": \"2023-12-01T10:00:00Z\",\n    \"updatedAt\": \"2023-12-01T10:00:00Z\",\n    \"startDate\": \"2023-12-01T10:00:00Z\",\n    \"endDate\": \"2023-12-31T23:59:59Z\"\n  },\n  {\n    \"id\": \"exp_123\",\n    \"name\": \"Button Color Test\",\n    \"description\": \"Testing different button colors for conversion\",\n    \"status\": \"active\",\n    \"variants\": [\n      {\n        \"name\": \"control\",\n        \"weight\": 50,\n        \"config\": {\n          \"buttonColor\": \"#007bff\"\n        }\n      },\n      {\n        \"name\": \"control\",\n        \"weight\": 50,\n        \"config\": {\n          \"buttonColor\": \"#007bff\"\n        }\n      }\n    ],\n    \"targetingRules\": [\n      {\n        \"type\": \"percentage\",\n        \"value\": 1878.044007199442,\n        \"conditions\": [\n          {\n            \"key_0\": 3490.0303351312823\n          },\n          {\n            \"key_0\": \"string\",\n            \"key_1\": true\n          }\n        ]\n      },\n      {\n        \"type\": \"percentage\",\n        \"value\": 3590.5102163841816,\n        \"conditions\": [\n          {\n            \"key_0\": 8061.192623038465,\n            \"key_1\": false\n          },\n          {\n            \"key_0\": \"string\",\n            \"key_1\": false,\n            \"key_2\": \"string\",\n            \"key_3\": true\n          }\n        ]\n      }\n    ],\n    \"createdAt\": \"2023-12-01T10:00:00Z\",\n    \"updatedAt\": \"2023-12-01T10:00:00Z\",\n    \"startDate\": \"2023-12-01T10:00:00Z\",\n    \"endDate\": \"2023-12-31T23:59:59Z\"\n  }\n]"
+						},
+						{
+							"id": "44848164-a48ff140-f1c5-4b0b-9369-555e846f8fc6",
+							"name": "Server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a new experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0ed13dea-6df9-4b12-bf57-86fd4f6fdfcd",
+								"exec": [
+									"// Test: Status code is 201 (Created)",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Test: Response is a valid JSON object",
+									"pm.test(\"Response is a valid JSON object\", function () {",
+									"    pm.response.to.be.json;",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"});",
+									"",
+									"// Test: Response contains required experiment fields",
+									"pm.test(\"Response contains required experiment fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('name');",
+									"    pm.expect(jsonData).to.have.property('variants');",
+									"    pm.expect(jsonData.variants).to.be.an('array');",
+									"    pm.expect(jsonData).to.have.property('targetingRules');",
+									"    pm.expect(jsonData.targetingRules).to.be.an('array');",
+									"});",
+									"",
+									"// Test: Each variant has required fields",
+									"pm.test(\"Each variant has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.variants && jsonData.variants.length > 0) {",
+									"        jsonData.variants.forEach(function(variant) {",
+									"            pm.expect(variant).to.have.property('name');",
+									"            pm.expect(variant).to.have.property('weight');",
+									"            pm.expect(variant).to.have.property('config');",
+									"        });",
+									"    }",
+									"});",
+									"",
+									"// Test: Targeting rules have required fields",
+									"pm.test(\"Targeting rules have required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.targetingRules && jsonData.targetingRules.length > 0) {",
+									"        jsonData.targetingRules.forEach(function(rule) {",
+									"            pm.expect(rule).to.have.property('type');",
+									"            pm.expect(rule).to.have.property('value');",
+									"        });",
+									"    }",
+									"});",
+									"",
+									"// Test: Error response for invalid input",
+									"pm.test(\"Returns 400 for invalid input\", function () {",
+									"    if (pm.response.code === 400) {",
+									"        pm.response.to.have.status(400);",
+									"        pm.response.to.be.json;",
+									"        var jsonData = pm.response.json();",
+									"        pm.expect(jsonData).to.have.property('error');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "44848164-9fabe4cc-220e-440d-801a-c6123cc9a57b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/experiments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments"
+							]
+						},
+						"description": "Create a new A/B testing experiment"
+					},
+					"response": [
+						{
+							"id": "44848164-e5923baf-6de7-4afe-ab85-30e0d11e4e33",
+							"name": "Experiment created successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"id\": \"exp_123\",\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"status\": \"active\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 5406.448534006107,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 9737.649033849912,\n          \"key_1\": 3973,\n          \"key_2\": true,\n          \"key_3\": 5598\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 8877.374895683886,\n      \"conditions\": [\n        {\n          \"key_0\": 6605\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 461.17992625095303,\n          \"key_2\": 2178,\n          \"key_3\": 9113\n        }\n      ]\n    }\n  ],\n  \"createdAt\": \"2023-12-01T10:00:00Z\",\n  \"updatedAt\": \"2023-12-01T10:00:00Z\",\n  \"startDate\": \"2023-12-01T10:00:00Z\",\n  \"endDate\": \"2023-12-31T23:59:59Z\"\n}"
+						},
+						{
+							"id": "44848164-697bb220-62af-483e-b1e0-188baa5db0ca",
+							"name": "Bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+						},
+						{
+							"id": "44848164-f57bc08e-7a42-4118-bd51-04143588c85f",
+							"name": "API tests added",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
+						}
+					]
+				}
+			],
+			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3002/api"
+		}
+	]
+}
