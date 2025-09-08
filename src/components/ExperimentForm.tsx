@@ -99,7 +99,7 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
       newErrors.description = 'Description is required';
     }
     
-    const totalPercentage = variants.reduce((sum, v) => sum + v.trafficPercentage, 0);
+    const totalPercentage = variants.reduce((sum, v) => sum + (v.trafficPercentage || 0), 0);
     if (Math.abs(totalPercentage - 100) > 0.01) {
       newErrors.traffic = 'Traffic percentages must sum to 100%';
     }
@@ -135,7 +135,7 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
     onSubmit(experimentData);
   };
 
-  const totalPercentage = variants.reduce((sum, v) => sum + v.trafficPercentage, 0);
+  const totalPercentage = variants.reduce((sum, v) => sum + (v.trafficPercentage || 0), 0);
 
   return (
     <div className="card">
@@ -208,13 +208,13 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
 
           <div className="space-y-4">
             {variants.map((variant, index) => (
-              <div key={variant.id} className="border border-gray-200 rounded-lg p-4">
+              <div key={variant.id || index} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-start justify-between mb-3">
-                  <h4 className="font-medium text-gray-900">Variant {variant.id.toUpperCase()}</h4>
+                  <h4 className="font-medium text-gray-900">Variant {(variant.id || String.fromCharCode(65 + index)).toUpperCase()}</h4>
                   {variants.length > 2 && (
                     <button
                       type="button"
-                      onClick={() => removeVariant(variant.id)}
+                      onClick={() => removeVariant(variant.id || '')}
                       className="btn btn-danger text-sm"
                     >
                       <X size={14} />
@@ -228,7 +228,7 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
                     <input
                       type="text"
                       value={variant.name}
-                      onChange={(e) => updateVariant(variant.id, 'name', e.target.value)}
+                      onChange={(e) => updateVariant(variant.id || '', 'name', e.target.value)}
                       className="form-input"
                       placeholder="e.g., Control, Red Button"
                     />
@@ -249,7 +249,7 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
                         max="100"
                         step="0.1"
                         value={variant.trafficPercentage}
-                        onChange={(e) => updateTrafficPercentage(variant.id, parseFloat(e.target.value) || 0)}
+                        onChange={(e) => updateTrafficPercentage(variant.id || '', parseFloat(e.target.value) || 0)}
                         className="form-input"
                       />
                       <span className="text-gray-500">%</span>

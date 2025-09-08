@@ -58,11 +58,11 @@ npm install
 npm start
 ```
 
-The application will open at `http://localhost:3002`
+The application will open at `http://localhost:3000`
 
 ### Available Scripts
 
-- `npm start` - Runs the app in development mode on port 3002
+- `npm start` - Runs the app in development mode on port 3000
 - `npm build` - Builds the app for production
 - `npm test` - Launches the test runner
 - `npm eject` - Ejects from Create React App (irreversible)

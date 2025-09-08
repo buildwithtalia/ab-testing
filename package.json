@@ -48,5 +48,6 @@
     "@types/express": "^4.17.23",
     "concurrently": "^9.2.1",
     "ts-node": "^10.9.2"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

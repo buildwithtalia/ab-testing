@@ -15,21 +15,28 @@ export const ExperimentResults: React.FC<ExperimentResultsProps> = ({
   const calculateResults = () => {
     const controlVariant = experiment.variants[0];
     const results = experiment.variants.map((variant, index) => {
-      const conversionRate = variant.visitors > 0 ? (variant.conversions / variant.visitors) * 100 : 0;
-      const controlConversionRate = controlVariant.visitors > 0 ? (controlVariant.conversions / controlVariant.visitors) * 100 : 0;
+      const visitors = variant.visitors || 0;
+      const conversions = variant.conversions || 0;
+      const controlVisitors = controlVariant.visitors || 0;
+      const controlConversions = controlVariant.conversions || 0;
+      
+      const conversionRate = visitors > 0 ? (conversions / visitors) * 100 : 0;
+      const controlConversionRate = controlVisitors > 0 ? (controlConversions / controlVisitors) * 100 : 0;
       
       // Calculate uplift relative to control
       const uplift = index === 0 ? 0 : controlConversionRate > 0 ? ((conversionRate - controlConversionRate) / controlConversionRate) * 100 : 0;
       
       // Simple statistical significance calculation (simplified z-test)
       // In a real application, you'd want more sophisticated statistical analysis
-      const isSignificant = Math.abs(uplift) > 5 && variant.visitors > 100; // Simplified threshold
+      const isSignificant = Math.abs(uplift) > 5 && visitors > 100; // Simplified threshold
       
       // Mock confidence interval calculation
-      const marginOfError = Math.sqrt((conversionRate * (100 - conversionRate)) / variant.visitors) * 1.96;
+      const marginOfError = visitors > 0 ? Math.sqrt((conversionRate * (100 - conversionRate)) / visitors) * 1.96 : 0;
       
       return {
         ...variant,
+        visitors,
+        conversions,
         conversionRate,
         uplift,
         isSignificant,
@@ -44,8 +51,8 @@ export const ExperimentResults: React.FC<ExperimentResultsProps> = ({
   };
 
   const results = calculateResults();
-  const totalVisitors = results.reduce((sum, result) => sum + result.visitors, 0);
-  const totalConversions = results.reduce((sum, result) => result.conversions, 0);
+  const totalVisitors = results.reduce((sum, result) => sum + (result.visitors || 0), 0);
+  const totalConversions = results.reduce((sum, result) => sum + (result.conversions || 0), 0);
   const overallConversionRate = totalVisitors > 0 ? (totalConversions / totalVisitors) * 100 : 0;
   
   // Find the winning variant (highest conversion rate with statistical significance)

@@ -84,7 +84,7 @@ export const Dashboard: React.FC = () => {
         description: experiment.description,
         variants: experiment.variants.map(v => ({
           name: v.name,
-          trafficPercentage: v.trafficPercentage
+          trafficPercentage: v.trafficPercentage || v.weight || 0
         }))
       });
       if (response.success) {
@@ -122,13 +122,13 @@ export const Dashboard: React.FC = () => {
 
   const getTotalVisitors = () => {
     return experiments.reduce((total, exp) => {
-      return total + exp.variants.reduce((variantTotal, variant) => variantTotal + variant.visitors, 0);
+      return total + exp.variants.reduce((variantTotal, variant) => variantTotal + (variant.visitors || 0), 0);
     }, 0);
   };
 
   const getTotalConversions = () => {
     return experiments.reduce((total, exp) => {
-      return total + exp.variants.reduce((variantTotal, variant) => variantTotal + variant.conversions, 0);
+      return total + exp.variants.reduce((variantTotal, variant) => variantTotal + (variant.conversions || 0), 0);
     }, 0);
   };
 

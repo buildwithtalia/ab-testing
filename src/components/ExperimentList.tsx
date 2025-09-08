@@ -43,8 +43,8 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
   };
 
   const getExperimentMetrics = (experiment: Experiment) => {
-    const totalVisitors = experiment.variants.reduce((sum, variant) => sum + variant.visitors, 0);
-    const totalConversions = experiment.variants.reduce((sum, variant) => sum + variant.conversions, 0);
+    const totalVisitors = experiment.variants.reduce((sum, variant) => sum + (variant.visitors || 0), 0);
+    const totalConversions = experiment.variants.reduce((sum, variant) => sum + (variant.conversions || 0), 0);
     const conversionRate = totalVisitors > 0 ? ((totalConversions / totalVisitors) * 100) : 0;
     
     return {
@@ -177,8 +177,10 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
                     <h4 className="font-medium text-gray-900">Variants ({experiment.variants.length})</h4>
                     <div className="grid gap-2">
                       {experiment.variants.map((variant) => {
-                        const variantConversionRate = variant.visitors > 0 
-                          ? ((variant.conversions / variant.visitors) * 100) 
+                        const visitors = variant.visitors || 0;
+                        const conversions = variant.conversions || 0;
+                        const variantConversionRate = visitors > 0 
+                          ? ((conversions / visitors) * 100) 
                           : 0;
                           
                         return (
@@ -186,12 +188,12 @@ export const ExperimentList: React.FC<ExperimentListProps> = ({
                             <div className="flex items-center gap-3">
                               <div className="font-medium">{variant.name}</div>
                               <div className="text-sm text-gray-600">
-                                {variant.trafficPercentage}% traffic
+                                {variant.trafficPercentage || variant.weight || 0}% traffic
                               </div>
                             </div>
                             <div className="flex items-center gap-4 text-sm">
-                              <span>{variant.visitors.toLocaleString()} visitors</span>
-                              <span>{variant.conversions.toLocaleString()} conversions</span>
+                              <span>{visitors.toLocaleString()} visitors</span>
+                              <span>{conversions.toLocaleString()} conversions</span>
                               <span className="font-medium">{variantConversionRate.toFixed(2)}%</span>
                             </div>
                           </div>

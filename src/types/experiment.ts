@@ -1,9 +1,11 @@
 export interface Variant {
-  id: string;
+  id?: string;
   name: string;
-  trafficPercentage: number;
-  conversions: number;
-  visitors: number;
+  trafficPercentage?: number;
+  weight?: number; // API uses 'weight' instead of 'trafficPercentage'
+  conversions?: number;
+  visitors?: number;
+  config?: Record<string, any>; // API includes config object
 }
 
 export interface Experiment {

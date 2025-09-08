@@ -214,6 +214,30 @@ function calculateResults(experimentId: string): {
   };
 }
 
+// Helper function to enrich experiment data with participant/conversion stats
+function enrichExperimentWithStats(experiment: Experiment): Experiment {
+  try {
+    const results = calculateResults(experiment.id);
+    
+    const enrichedVariants = experiment.variants.map(variant => {
+      const variantResult = results.variants.find(v => v.variantName === variant.name);
+      return {
+        ...variant,
+        visitors: variantResult?.participants || 0,
+        conversions: variantResult?.conversions || 0
+      };
+    });
+
+    return {
+      ...experiment,
+      variants: enrichedVariants
+    };
+  } catch (error) {
+    console.error(`Error enriching experiment ${experiment.id}:`, error);
+    return experiment;
+  }
+}
+
 // API Routes
 
 // Health check endpoint
@@ -227,7 +251,8 @@ app.get('/api/health', (req, res) => {
 // Get all experiments
 app.get('/api/experiments', (req, res) => {
   try {
-    res.json(experiments);
+    const enrichedExperiments = experiments.map(exp => enrichExperimentWithStats(exp));
+    res.json(enrichedExperiments);
   } catch (error) {
     res.status(500).json({ 
       error: 'Internal server error',
@@ -294,7 +319,7 @@ app.get('/api/experiments/:id', (req, res) => {
         message: 'The requested experiment could not be found'
       });
     }
-    res.json(experiment);
+    res.json(enrichExperimentWithStats(experiment));
   } catch (error) {
     res.status(500).json({ 
       error: 'Internal server error',
@@ -316,7 +341,7 @@ app.put('/api/experiments/:id', (req, res) => {
     }
 
     const experiment = experiments[experimentIndex];
-    const { name, description, status, variants, targetingRules, endDate } = req.body;
+    const { name, description, status, variants, targetingRules, startDate, endDate } = req.body;
 
     // Validate variant weights if variants are provided
     if (variants && Array.isArray(variants)) {
@@ -340,6 +365,7 @@ app.put('/api/experiments/:id', (req, res) => {
         config: variant.config || {}
       })) : experiment.variants,
       targetingRules: targetingRules || experiment.targetingRules,
+      startDate: startDate ? new Date(startDate) : experiment.startDate,
       endDate: endDate ? new Date(endDate) : experiment.endDate,
       updatedAt: new Date()
     };
@@ -494,6 +520,38 @@ app.get('/api/experiments/:id/results', (req, res) => {
     res.status(500).json({ 
       error: 'Internal server error',
       message: 'Failed to calculate results'
+    });
+  }
+});
+
+// Special endpoint to manually update experiment dates
+app.patch('/api/experiments/:id/dates', (req, res) => {
+  try {
+    const experimentIndex = experiments.findIndex(exp => exp.id === req.params.id);
+    
+    if (experimentIndex === -1) {
+      return res.status(404).json({ 
+        error: 'Experiment not found',
+        message: 'The requested experiment could not be found'
+      });
+    }
+
+    const { startDate, endDate } = req.body;
+    const experiment = experiments[experimentIndex];
+
+    const updatedExperiment: Experiment = {
+      ...experiment,
+      startDate: startDate ? new Date(startDate) : experiment.startDate,
+      endDate: endDate ? new Date(endDate) : experiment.endDate,
+      updatedAt: new Date()
+    };
+
+    experiments[experimentIndex] = updatedExperiment;
+    res.json(updatedExperiment);
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: 'Failed to update experiment dates'
     });
   }
 });
