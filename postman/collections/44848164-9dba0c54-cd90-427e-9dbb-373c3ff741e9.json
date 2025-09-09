@@ -458,6 +458,19 @@
 							"item": [
 								{
 									"name": "Get experiment results",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a4b62bda-9bf1-4628-8431-5fcba2387558",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"id": "44848164-e091b62c-55e3-4a2b-a5e4-b1e638935de5",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -482,7 +495,6 @@
 											],
 											"variable": [
 												{
-													"id": "77585369-550d-49dd-baa9-6724d04b6a69",
 													"key": "id",
 													"value": "exp_123",
 													"description": "(Required) Experiment ID"
