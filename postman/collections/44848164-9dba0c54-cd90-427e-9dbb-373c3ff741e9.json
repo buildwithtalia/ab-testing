@@ -104,32 +104,7 @@
 											"script": {
 												"id": "104fde70-2d48-4d41-bc57-f7888085a875",
 												"exec": [
-													"// Test: Status code is 200 for assignment, 404 for experiment not found",
-													"pm.test(\"Status code is 200 or 404\", function () {",
-													"    pm.expect([200, 404]).to.include(pm.response.code);",
-													"});",
-													"",
-													"// Test: Response for successful assignment",
-													"if (pm.response.code === 200) {",
-													"    pm.test(\"Response contains assigned variant info\", function () {",
-													"        pm.response.to.be.json;",
-													"        var jsonData = pm.response.json();",
-													"        pm.expect(jsonData).to.have.property('userId');",
-													"        pm.expect(jsonData).to.have.property('experimentId');",
-													"        pm.expect(jsonData).to.have.property('assignedVariant');",
-													"        pm.expect(jsonData.assignedVariant).to.have.property('name');",
-													"        pm.expect(jsonData.assignedVariant).to.have.property('config');",
-													"    });",
-													"}",
-													"",
-													"// Test: Error message for experiment not found",
-													"if (pm.response.code === 404) {",
-													"    pm.test(\"Returns error message for not found\", function () {",
-													"        pm.response.to.be.json;",
-													"        var jsonData = pm.response.json();",
-													"        pm.expect(jsonData).to.have.property('error');",
-													"    });",
-													"}"
+													""
 												],
 												"type": "text/javascript",
 												"packages": {}
@@ -307,9 +282,32 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bf9f13f0-76b1-4d6a-93a4-2eac2df8a853",
+												"id": "066c3ce6-ac18-4002-85ae-8e8adda2dac6",
 												"exec": [
-													""
+													"// Test: Status code is 200 for success, 404 for experiment not found",
+													"pm.test(\"Status code is 200 or 404\", function () {",
+													"    pm.expect([200, 404]).to.include(pm.response.code);",
+													"});",
+													"",
+													"// Test: Successful event tracking response",
+													"if (pm.response.code === 200) {",
+													"    pm.test(\"Response confirms event tracked\", function () {",
+													"        pm.response.to.be.json;",
+													"        var jsonData = pm.response.json();",
+													"        pm.expect(jsonData).to.have.property('success');",
+													"        pm.expect(jsonData.success).to.eql(true);",
+													"        pm.expect(jsonData).to.have.property('eventId');",
+													"    });",
+													"}",
+													"",
+													"// Test: Error message for experiment not found",
+													"if (pm.response.code === 404) {",
+													"    pm.test(\"Returns error message for not found\", function () {",
+													"        pm.response.to.be.json;",
+													"        var jsonData = pm.response.json();",
+													"        pm.expect(jsonData).to.have.property('error');",
+													"    });",
+													"}"
 												],
 												"type": "text/javascript",
 												"packages": {}
