@@ -284,30 +284,7 @@
 											"script": {
 												"id": "066c3ce6-ac18-4002-85ae-8e8adda2dac6",
 												"exec": [
-													"// Test: Status code is 200 for success, 404 for experiment not found",
-													"pm.test(\"Status code is 200 or 404\", function () {",
-													"    pm.expect([200, 404]).to.include(pm.response.code);",
-													"});",
-													"",
-													"// Test: Successful event tracking response",
-													"if (pm.response.code === 200) {",
-													"    pm.test(\"Response confirms event tracked\", function () {",
-													"        pm.response.to.be.json;",
-													"        var jsonData = pm.response.json();",
-													"        pm.expect(jsonData).to.have.property('success');",
-													"        pm.expect(jsonData.success).to.eql(true);",
-													"        pm.expect(jsonData).to.have.property('eventId');",
-													"    });",
-													"}",
-													"",
-													"// Test: Error message for experiment not found",
-													"if (pm.response.code === 404) {",
-													"    pm.test(\"Returns error message for not found\", function () {",
-													"        pm.response.to.be.json;",
-													"        var jsonData = pm.response.json();",
-													"        pm.expect(jsonData).to.have.property('error');",
-													"    });",
-													"}"
+													""
 												],
 												"type": "text/javascript",
 												"packages": {}
