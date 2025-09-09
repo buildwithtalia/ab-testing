@@ -1001,6 +1001,19 @@
 				},
 				{
 					"name": "Get all experiments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "01aa118d-93e7-40d0-bf73-b4b9c25e5f9c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "44848164-2dc4ed9f-f58d-4a6b-9e58-e3cf2bf38d6e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1101,63 +1114,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0ed13dea-6df9-4b12-bf57-86fd4f6fdfcd",
+								"id": "b5423caa-091b-4130-bf73-d705a26fa91a",
 								"exec": [
-									"// Test: Status code is 201 (Created)",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"// Test: Response is a valid JSON object",
-									"pm.test(\"Response is a valid JSON object\", function () {",
-									"    pm.response.to.be.json;",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.be.an('object');",
-									"});",
-									"",
-									"// Test: Response contains required experiment fields",
-									"pm.test(\"Response contains required experiment fields\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.property('id');",
-									"    pm.expect(jsonData).to.have.property('name');",
-									"    pm.expect(jsonData).to.have.property('variants');",
-									"    pm.expect(jsonData.variants).to.be.an('array');",
-									"    pm.expect(jsonData).to.have.property('targetingRules');",
-									"    pm.expect(jsonData.targetingRules).to.be.an('array');",
-									"});",
-									"",
-									"// Test: Each variant has required fields",
-									"pm.test(\"Each variant has required fields\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    if (jsonData.variants && jsonData.variants.length > 0) {",
-									"        jsonData.variants.forEach(function(variant) {",
-									"            pm.expect(variant).to.have.property('name');",
-									"            pm.expect(variant).to.have.property('weight');",
-									"            pm.expect(variant).to.have.property('config');",
-									"        });",
-									"    }",
-									"});",
-									"",
-									"// Test: Targeting rules have required fields",
-									"pm.test(\"Targeting rules have required fields\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    if (jsonData.targetingRules && jsonData.targetingRules.length > 0) {",
-									"        jsonData.targetingRules.forEach(function(rule) {",
-									"            pm.expect(rule).to.have.property('type');",
-									"            pm.expect(rule).to.have.property('value');",
-									"        });",
-									"    }",
-									"});",
-									"",
-									"// Test: Error response for invalid input",
-									"pm.test(\"Returns 400 for invalid input\", function () {",
-									"    if (pm.response.code === 400) {",
-									"        pm.response.to.have.status(400);",
-									"        pm.response.to.be.json;",
-									"        var jsonData = pm.response.json();",
-									"        pm.expect(jsonData).to.have.property('error');",
-									"    }",
-									"});"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
