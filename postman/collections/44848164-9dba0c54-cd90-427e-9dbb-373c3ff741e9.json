@@ -980,7 +980,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "42488ad5-a347-484a-a600-e64dc8f387a4",
 										"exec": [
 											"pm.test(\"Status code is 204\", function () {",
 											"    pm.response.to.have.status(204);",
@@ -988,7 +988,9 @@
 											"pm.test(\"Response time is less than 800ms\", function () {",
 											"    pm.expect(pm.response.responseTime).to.be.below(800);",
 											"});"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -1005,13 +1007,19 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
+									"raw": "{{baseUrl}}/experiments/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"experiments",
-										"exp_b0qj4lqcv"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
 									]
 								},
 								"description": "Delete an experiment by ID"
@@ -1098,9 +1106,29 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "01aa118d-93e7-40d0-bf73-b4b9c25e5f9c",
+								"id": "f55d1a0f-a128-490a-b0a7-79ed8f8ee390",
 								"exec": [
-									""
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.test(\"Response is an array\", function () {",
+									"        pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"    });",
+									"    if (Array.isArray(jsonData) && jsonData.length > 0) {",
+									"        pm.test(\"Each experiment has 'id' and 'name' properties\", function () {",
+									"            jsonData.forEach(function(item) {",
+									"                pm.expect(item).to.have.property(\"id\");",
+									"                pm.expect(item).to.have.property(\"name\");",
+									"            });",
+									"        });",
+									"    }",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
