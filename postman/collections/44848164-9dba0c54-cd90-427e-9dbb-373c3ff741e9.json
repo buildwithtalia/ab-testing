@@ -657,7 +657,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "c5890dd4-6b3e-4a9b-811a-d29ae3090ff8",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -675,7 +675,9 @@
 											"        pm.expect(jsonData).to.have.property(\"name\");",
 											"    });",
 											"}"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -792,7 +794,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "c2eb0c4a-f1e8-4abb-8edc-3aa55d051161",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -810,7 +812,9 @@
 											"        pm.expect(jsonData).to.have.property(\"updatedAt\");",
 											"    });",
 											"}"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
