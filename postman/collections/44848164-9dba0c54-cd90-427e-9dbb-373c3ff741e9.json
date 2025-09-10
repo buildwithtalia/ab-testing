@@ -17,7 +17,22 @@
 							"script": {
 								"id": "76fa2165-6716-4bb5-96cc-1dfd50037591",
 								"exec": [
-									""
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.test(\"Response has 'status' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"status\");",
+									"    });",
+									"    pm.test(\"Response has 'message' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"message\");",
+									"    });",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -942,12 +957,15 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cc5e01ce-0c2f-4211-847d-55215732450c",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {}
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});"
+										]
 									}
 								}
 							],
