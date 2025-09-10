@@ -623,12 +623,25 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "611a0630-d639-4e90-8318-ab9438466631",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {}
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'id' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"    });",
+											"    pm.test(\"Response has 'name' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"name\");",
+											"    });",
+											"}"
+										]
 									}
 								}
 							],
@@ -745,12 +758,25 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4b866140-c33f-47ef-8ba2-92e9124bcde9",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {}
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'id' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"    });",
+											"    pm.test(\"Response has 'updatedAt' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"updatedAt\");",
+											"    });",
+											"}"
+										]
 									}
 								}
 							],
