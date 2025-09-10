@@ -282,12 +282,25 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "066c3ce6-ac18-4002-85ae-8e8adda2dac6",
-												"exec": [
-													""
-												],
 												"type": "text/javascript",
-												"packages": {}
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Response time is less than 800ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(800);",
+													"});",
+													"",
+													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+													"    var jsonData = pm.response.json();",
+													"    pm.test(\"Response has 'eventId' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"eventId\");",
+													"    });",
+													"    pm.test(\"Response has 'conversion' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"conversion\");",
+													"    });",
+													"}"
+												]
 											}
 										}
 									],
@@ -462,12 +475,25 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a4b62bda-9bf1-4628-8431-5fcba2387558",
-												"exec": [
-													""
-												],
 												"type": "text/javascript",
-												"packages": {}
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Response time is less than 800ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(800);",
+													"});",
+													"",
+													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+													"    var jsonData = pm.response.json();",
+													"    pm.test(\"Response has 'experimentId' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"experimentId\");",
+													"    });",
+													"    pm.test(\"Response has 'results' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"results\");",
+													"    });",
+													"}"
+												]
 											}
 										}
 									],
