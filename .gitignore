@@ -48,3 +48,4 @@ logs
 # Optional eslint cache
 .eslintcache
 node_modules
+server/dist/

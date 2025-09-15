@@ -15,7 +15,8 @@ paths:
       tags:
         - Health
       summary: Health check endpoint
-      description: Returns the health status of the API
+      description: Returns the health status of the API. **This endpoint is deprecated and will be removed in a future version.**
+      deprecated: true
       responses:
         '200':
           description: API is healthy
