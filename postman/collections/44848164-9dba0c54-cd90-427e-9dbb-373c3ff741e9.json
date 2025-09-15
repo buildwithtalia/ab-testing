@@ -110,197 +110,7 @@
 					"item": [
 						{
 							"name": "assign",
-							"item": [
-								{
-									"name": "Assign user to variant",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "104fde70-2d48-4d41-bc57-f7888085a875",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"pm.test(\"Response time is less than 800ms\", function () {",
-													"    pm.expect(pm.response.responseTime).to.be.below(800);",
-													"});",
-													"",
-													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-													"    var jsonData = pm.response.json();",
-													"    pm.test(\"Response has 'userId' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"userId\");",
-													"    });",
-													"    pm.test(\"Response has 'variantId' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"variantId\");",
-													"    });",
-													"}"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "44848164-7fd26d2f-291a-40ac-b520-37d5732c4bfc",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-											"options": {
-												"raw": {
-													"headerFamily": "json",
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseUrl}}/experiments/:id/assign",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"experiments",
-												":id",
-												"assign"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "exp_123",
-													"description": "(Required) Experiment ID"
-												}
-											]
-										},
-										"description": "Assign a user to a specific variant in an experiment"
-									},
-									"response": [
-										{
-											"id": "44848164-1bb7e515-a9c2-47b0-8dc7-80c27c484f66",
-											"name": "User assigned to variant",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													},
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-													"options": {
-														"raw": {
-															"headerFamily": "json",
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/experiments/:id/assign",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"experiments",
-														":id",
-														"assign"
-													],
-													"variable": [
-														{
-															"key": "id"
-														}
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n  \"experimentId\": \"exp_123\",\n  \"userId\": \"user_456\",\n  \"variant\": {\n    \"name\": \"control\",\n    \"weight\": 50,\n    \"config\": {\n      \"buttonColor\": \"#007bff\"\n    }\n  },\n  \"assignedAt\": \"2023-12-01T10:00:00Z\"\n}"
-										},
-										{
-											"id": "44848164-74b7e68b-61d4-4fa4-928a-0957a076fa3b",
-											"name": "Experiment not found",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													},
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-													"options": {
-														"raw": {
-															"headerFamily": "json",
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/experiments/:id/assign",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"experiments",
-														":id",
-														"assign"
-													],
-													"variable": [
-														{
-															"key": "id"
-														}
-													]
-												}
-											},
-											"status": "Not Found",
-											"code": 404,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
-										}
-									]
-								}
-							],
+							"item": [],
 							"id": "44848164-a92247e8-4a67-4f17-a942-ebc8dc4a643f"
 						},
 						{
@@ -650,6 +460,195 @@
 								}
 							],
 							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe"
+						},
+						{
+							"name": "Assign user to variant",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "104fde70-2d48-4d41-bc57-f7888085a875",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'userId' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"userId\");",
+											"    });",
+											"    pm.test(\"Response has 'variantId' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"variantId\");",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "44848164-7fd26d2f-291a-40ac-b520-37d5732c4bfc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id/assign",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id",
+										"assign"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "exp_123",
+											"description": "(Required) Experiment ID"
+										}
+									]
+								},
+								"description": "Assign a user to a specific variant in an experiment"
+							},
+							"response": [
+								{
+									"id": "44848164-1bb7e515-a9c2-47b0-8dc7-80c27c484f66",
+									"name": "User assigned to variant",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"assign"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"experimentId\": \"exp_123\",\n  \"userId\": \"user_456\",\n  \"variant\": {\n    \"name\": \"control\",\n    \"weight\": 50,\n    \"config\": {\n      \"buttonColor\": \"#007bff\"\n    }\n  },\n  \"assignedAt\": \"2023-12-01T10:00:00Z\"\n}"
+								},
+								{
+									"id": "44848164-74b7e68b-61d4-4fa4-928a-0957a076fa3b",
+									"name": "Experiment not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"assign"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								}
+							]
 						},
 						{
 							"name": "Get experiment by ID",
