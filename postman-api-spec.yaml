@@ -12,6 +12,7 @@ servers:
 paths:
   /health:
     get:
+      deprecated: true
       tags:
         - Health
       summary: Health check endpoint
