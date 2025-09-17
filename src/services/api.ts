@@ -1,6 +1,6 @@
 import { Experiment } from '../types/experiment';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3002/api';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -66,9 +66,19 @@ class ApiService {
       trafficPercentage: number;
     }>;
   }): Promise<ApiResponse<Experiment>> {
+    // Convert trafficPercentage to weight for backend compatibility
+    const backendData = {
+      ...experimentData,
+      variants: experimentData.variants.map(variant => ({
+        name: variant.name,
+        weight: variant.trafficPercentage,
+        config: {}
+      }))
+    };
+    
     return this.request<ApiResponse<Experiment>>('/experiments', {
       method: 'POST',
-      body: JSON.stringify(experimentData),
+      body: JSON.stringify(backendData),
     });
   }
 

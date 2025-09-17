@@ -49,5 +49,5 @@
     "concurrently": "^9.2.1",
     "ts-node": "^10.9.2"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3002"
 }
