@@ -9,10 +9,17 @@ interface Variant {
   config: Record<string, any>;
 }
 
+interface SegmentationRule {
+  field: string; // e.g., 'country', 'device', 'age', 'premium'
+  operator: 'equals' | 'not_equals' | 'in' | 'not_in' | 'greater_than' | 'less_than' | 'contains';
+  value: string | number | (string | number)[];
+}
+
 interface TargetingRule {
-  type: 'percentage' | 'attribute' | 'custom';
-  value: number | string | object;
+  type: 'percentage' | 'attribute' | 'custom' | 'segmentation';
+  value?: number | string | object;
   conditions?: Record<string, any>[];
+  segmentationRules?: SegmentationRule[];
 }
 
 interface Experiment {
@@ -22,6 +29,7 @@ interface Experiment {
   status: 'draft' | 'active' | 'paused' | 'completed';
   variants: Variant[];
   targetingRules: TargetingRule[];
+  segmentationRules?: SegmentationRule[];
   startDate?: Date;
   endDate?: Date;
   createdAt: Date;
@@ -96,6 +104,71 @@ experiments = sampleExperiments;
 // Utility functions
 function generateId(): string {
   return 'exp_' + Math.random().toString(36).substr(2, 9);
+}
+
+function matchesSegmentationRules(segmentationRules: SegmentationRule[], userAttributes: Record<string, any>): boolean {
+  if (!segmentationRules || segmentationRules.length === 0) {
+    return true; // No rules means all users are eligible
+  }
+
+  // All rules must match (AND logic)
+  return segmentationRules.every(rule => {
+    const userValue = userAttributes[rule.field];
+    
+    if (userValue === undefined || userValue === null) {
+      return false; // User doesn't have this attribute
+    }
+
+    switch (rule.operator) {
+      case 'equals':
+        return userValue === rule.value;
+      case 'not_equals':
+        return userValue !== rule.value;
+      case 'in':
+        return Array.isArray(rule.value) && (rule.value as (string | number)[]).includes(userValue);
+      case 'not_in':
+        return Array.isArray(rule.value) && !(rule.value as (string | number)[]).includes(userValue);
+      case 'greater_than':
+        return typeof userValue === 'number' && typeof rule.value === 'number' && userValue > rule.value;
+      case 'less_than':
+        return typeof userValue === 'number' && typeof rule.value === 'number' && userValue < rule.value;
+      case 'contains':
+        return typeof userValue === 'string' && typeof rule.value === 'string' && userValue.includes(rule.value);
+      default:
+        return false;
+    }
+  });
+}
+
+function validateSegmentationRules(segmentationRules: SegmentationRule[]): { isValid: boolean; error?: string } {
+  if (!segmentationRules || segmentationRules.length === 0) {
+    return { isValid: true }; // No rules is valid
+  }
+
+  for (const rule of segmentationRules) {
+    if (!rule.field || typeof rule.field !== 'string') {
+      return { isValid: false, error: 'Segmentation rule must have a valid field name' };
+    }
+
+    if (!rule.operator || !['equals', 'not_equals', 'in', 'not_in', 'greater_than', 'less_than', 'contains'].includes(rule.operator)) {
+      return { isValid: false, error: `Invalid operator: ${rule.operator}` };
+    }
+
+    if (rule.value === undefined || rule.value === null) {
+      return { isValid: false, error: 'Segmentation rule must have a value' };
+    }
+
+    // Validate value type based on operator
+    if (['in', 'not_in'].includes(rule.operator) && !Array.isArray(rule.value)) {
+      return { isValid: false, error: `Operator ${rule.operator} requires an array value` };
+    }
+
+    if (['greater_than', 'less_than'].includes(rule.operator) && typeof rule.value !== 'number') {
+      return { isValid: false, error: `Operator ${rule.operator} requires a numeric value` };
+    }
+  }
+
+  return { isValid: true };
 }
 
 function assignVariant(experiment: Experiment, userId: string): Variant {
@@ -264,7 +337,7 @@ app.get('/api/experiments', (req, res) => {
 // Create a new experiment
 app.post('/api/experiments', (req, res) => {
   try {
-    const { name, description, variants, targetingRules, startDate, endDate } = req.body;
+    const { name, description, variants, targetingRules, segmentationRules, startDate, endDate } = req.body;
     
     if (!name || !variants || !Array.isArray(variants) || variants.length < 2) {
       return res.status(400).json({ 
@@ -282,6 +355,17 @@ app.post('/api/experiments', (req, res) => {
       });
     }
 
+    // Validate segmentation rules if provided
+    if (segmentationRules) {
+      const validation = validateSegmentationRules(segmentationRules);
+      if (!validation.isValid) {
+        return res.status(400).json({ 
+          error: 'Invalid segmentation rules',
+          message: validation.error
+        });
+      }
+    }
+
     const newExperiment: Experiment = {
       id: generateId(),
       name,
@@ -293,6 +377,7 @@ app.post('/api/experiments', (req, res) => {
         config: variant.config || {}
       })),
       targetingRules: targetingRules || [{ type: 'percentage', value: 100 }],
+      segmentationRules: segmentationRules || [],
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
       createdAt: new Date(),
@@ -341,7 +426,7 @@ app.put('/api/experiments/:id', (req, res) => {
     }
 
     const experiment = experiments[experimentIndex];
-    const { name, description, status, variants, targetingRules, startDate, endDate } = req.body;
+    const { name, description, status, variants, targetingRules, segmentationRules, startDate, endDate } = req.body;
 
     // Validate variant weights if variants are provided
     if (variants && Array.isArray(variants)) {
@@ -350,6 +435,17 @@ app.put('/api/experiments/:id', (req, res) => {
         return res.status(400).json({ 
           error: 'Invalid variant weights',
           message: 'Variant weights must sum to 100'
+        });
+      }
+    }
+
+    // Validate segmentation rules if provided
+    if (segmentationRules) {
+      const validation = validateSegmentationRules(segmentationRules);
+      if (!validation.isValid) {
+        return res.status(400).json({ 
+          error: 'Invalid segmentation rules',
+          message: validation.error
         });
       }
     }
@@ -365,6 +461,7 @@ app.put('/api/experiments/:id', (req, res) => {
         config: variant.config || {}
       })) : experiment.variants,
       targetingRules: targetingRules || experiment.targetingRules,
+      segmentationRules: segmentationRules !== undefined ? segmentationRules : experiment.segmentationRules,
       startDate: startDate ? new Date(startDate) : experiment.startDate,
       endDate: endDate ? new Date(endDate) : experiment.endDate,
       updatedAt: new Date()
@@ -428,6 +525,25 @@ app.post('/api/experiments/:id/assign', (req, res) => {
       });
     }
 
+    // Check if user matches segmentation rules
+    if (experiment.segmentationRules && experiment.segmentationRules.length > 0) {
+      if (!attributes) {
+        return res.status(400).json({ 
+          error: 'Missing user attributes',
+          message: 'User attributes are required for experiments with segmentation rules'
+        });
+      }
+
+      if (!matchesSegmentationRules(experiment.segmentationRules, attributes)) {
+        return res.status(200).json({ 
+          experimentId: req.params.id,
+          userId,
+          eligible: false,
+          message: 'User does not match segmentation criteria for this experiment'
+        });
+      }
+    }
+
     // Check if user already has an assignment
     let assignment = assignments.find(a => a.experimentId === req.params.id && a.userId === userId);
     
@@ -445,7 +561,10 @@ app.post('/api/experiments/:id/assign', (req, res) => {
       assignments.push(assignment);
     }
 
-    res.json(assignment);
+    res.json({
+      ...assignment,
+      eligible: true
+    });
   } catch (error) {
     res.status(500).json({ 
       error: 'Internal server error',

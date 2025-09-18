@@ -178,35 +178,93 @@ Create a new experiment with the provided data.
   "variants": [
     {
       "name": "Control",
-      "trafficPercentage": 50
+      "weight": 50,
+      "config": {
+        "buttonColor": "#007bff"
+      }
     },
     {
       "name": "Treatment",
-      "trafficPercentage": 50
+      "weight": 50,
+      "config": {
+        "buttonColor": "#dc3545"
+      }
+    }
+  ],
+  "segmentationRules": [
+    {
+      "field": "country",
+      "operator": "equals",
+      "value": "US"
+    },
+    {
+      "field": "device",
+      "operator": "in",
+      "value": ["mobile", "tablet"]
+    },
+    {
+      "field": "age",
+      "operator": "greater_than",
+      "value": 18
     }
   ]
 }
 ```
 
+**Segmentation Rules:**
+Segmentation rules allow you to define which users are eligible for the experiment based on their attributes.
+
+**Supported Operators:**
+- `equals`: Exact match (e.g., country equals "US")
+- `not_equals`: Not equal to value
+- `in`: Value is in array (e.g., device in ["mobile", "tablet"])
+- `not_in`: Value is not in array
+- `greater_than`: Numeric comparison (e.g., age > 18)
+- `less_than`: Numeric comparison (e.g., age < 65)
+- `contains`: String contains substring
+
+**Field Examples:**
+- `country`: "US", "UK", "CA"
+- `device`: "mobile", "tablet", "desktop"
+- `age`: numeric value
+- `premium`: boolean or string
+- `userType`: "new", "returning", "vip"
+
 **Success Response (201):**
 ```json
 {
-  "success": true,
-  "message": "Experiment created successfully",
-  "experiment": {
-    "id": "1704412800123",
-    "name": "New Experiment",
-    "description": "Description of the experiment",
-    "status": "draft",
-    "variants": [
-      {
-        "id": "variant-1704412800123-0",
-        "name": "Control",
-        "trafficPercentage": 50,
-        "conversions": 0,
-        "visitors": 0
+  "id": "exp_123",
+  "name": "New Experiment",
+  "description": "Description of the experiment",
+  "status": "draft",
+  "variants": [
+    {
+      "name": "Control",
+      "weight": 50,
+      "config": {
+        "buttonColor": "#007bff"
       }
-    ],
+    },
+    {
+      "name": "Treatment", 
+      "weight": 50,
+      "config": {
+        "buttonColor": "#dc3545"
+      }
+    }
+  ],
+  "segmentationRules": [
+    {
+      "field": "country",
+      "operator": "equals", 
+      "value": "US"
+    },
+    {
+      "field": "device",
+      "operator": "in",
+      "value": ["mobile", "tablet"]
+    }
+  ],
     "createdAt": "2024-01-04T20:00:00.123Z",
     "updatedAt": "2024-01-04T20:00:00.123Z"
   }
@@ -219,6 +277,76 @@ Create a new experiment with the provided data.
   "error": "Missing required fields: name, description, and variants"
 }
 ```
+
+**Error Response (400) - Invalid Segmentation Rules:**
+```json
+{
+  "error": "Invalid segmentation rules",
+  "message": "Segmentation rule must have a valid field name"
+}
+```
+
+### Assign User to Experiment Variant
+Assign a user to a variant in an experiment. Users must match segmentation rules if they are defined for the experiment.
+
+**POST** `/experiments/:id/assign`
+
+**Parameters:**
+- `id` (string): The experiment ID
+
+**Request Body:**
+```json
+{
+  "userId": "user123",
+  "attributes": {
+    "country": "US",
+    "device": "mobile", 
+    "age": 25,
+    "premium": true
+  }
+}
+```
+
+**For experiments with segmentation rules:**
+- `userId` is required
+- `attributes` is required and must contain all fields referenced in segmentation rules
+- User must match ALL segmentation rules to be eligible
+
+**For experiments without segmentation rules:**
+- Only `userId` is required
+- `attributes` is optional
+
+**Success Response - Eligible User (200):**
+```json
+{
+  "experimentId": "exp_123",
+  "userId": "user123",
+  "variant": {
+    "name": "treatment",
+    "weight": 50,
+    "config": {
+      "buttonColor": "#dc3545"
+    }
+  },
+  "assignedAt": "2025-01-01T12:00:00.000Z",
+  "eligible": true
+}
+```
+
+**Success Response - Ineligible User (200):**
+```json
+{
+  "experimentId": "exp_123",
+  "userId": "user456",
+  "eligible": false,
+  "message": "User does not match segmentation criteria for this experiment"
+}
+```
+
+**Error Responses:**
+- **404:** Experiment not found
+- **400:** Missing userId
+- **400:** Missing user attributes (for experiments with segmentation rules)
 
 ### Update Experiment Status (Generic)
 Update an experiment's status directly. This is a more flexible alternative to the specific start/stop endpoints.
