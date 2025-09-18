@@ -220,6 +220,76 @@ Create a new experiment with the provided data.
 }
 ```
 
+### Update Experiment
+Update an experiment's properties such as name, description, variants, etc.
+
+**PATCH** `/experiments/:id`
+
+**Parameters:**
+- `id` (string): The experiment ID
+
+**Request Body (all fields optional):**
+```json
+{
+  "name": "Updated Experiment Name",
+  "description": "Updated description",
+  "status": "draft",
+  "variants": [
+    {
+      "name": "Control",
+      "weight": 50,
+      "config": {}
+    },
+    {
+      "name": "Treatment",
+      "weight": 50,
+      "config": {}
+    }
+  ],
+  "targetingRules": [
+    {
+      "type": "percentage",
+      "value": 100
+    }
+  ],
+  "startDate": "2024-01-01T00:00:00.000Z",
+  "endDate": "2024-12-31T23:59:59.999Z"
+}
+```
+
+**Success Response:**
+```json
+{
+  "id": "1",
+  "name": "Updated Experiment Name",
+  "description": "Updated description",
+  "status": "draft",
+  "variants": [...],
+  "targetingRules": [...],
+  "startDate": "2024-01-01T00:00:00.000Z",
+  "endDate": "2024-12-31T23:59:59.999Z",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2025-09-05T19:01:28.806Z"
+}
+```
+
+**Error Responses:**
+- **404:** Experiment not found
+```json
+{
+  "error": "Experiment not found",
+  "message": "The requested experiment could not be found"
+}
+```
+
+- **400:** Invalid variant weights
+```json
+{
+  "error": "Invalid variant weights",
+  "message": "Variant weights must sum to 100"
+}
+```
+
 ### Update Experiment Status (Generic)
 Update an experiment's status directly. This is a more flexible alternative to the specific start/stop endpoints.
 

@@ -72,6 +72,26 @@ class ApiService {
     });
   }
 
+  // Update experiment (general)
+  async updateExperiment(id: string, experimentData: Partial<{
+    name: string;
+    description: string;
+    status: Experiment['status'];
+    variants: Array<{
+      name: string;
+      weight: number;
+      config?: any;
+    }>;
+    targetingRules: any;
+    startDate: string;
+    endDate: string;
+  }>): Promise<Experiment> {
+    return this.request<Experiment>(`/experiments/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(experimentData),
+    });
+  }
+
   // Update experiment status (generic)
   async updateExperimentStatus(id: string, status: Experiment['status']): Promise<ApiResponse<Experiment>> {
     return this.request<ApiResponse<Experiment>>(`/experiments/${id}/status`, {
