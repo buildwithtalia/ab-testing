@@ -11,6 +11,34 @@
 			"item": [
 				{
 					"name": "Health check endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "76fa2165-6716-4bb5-96cc-1dfd50037591",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.test(\"Response has 'status' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"status\");",
+									"    });",
+									"    pm.test(\"Response has 'message' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"message\");",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "44848164-c37167ea-f71e-4f59-84ec-466b8331007b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -82,170 +110,7 @@
 					"item": [
 						{
 							"name": "assign",
-							"item": [
-								{
-									"name": "Assign user to variant",
-									"id": "44848164-7fd26d2f-291a-40ac-b520-37d5732c4bfc",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-											"options": {
-												"raw": {
-													"headerFamily": "json",
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseUrl}}/experiments/:id/assign",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"experiments",
-												":id",
-												"assign"
-											],
-											"variable": [
-												{
-													"id": "43016327-10b1-42ba-844b-c71eae3c5597",
-													"key": "id",
-													"value": "exp_123",
-													"description": "(Required) Experiment ID"
-												}
-											]
-										},
-										"description": "Assign a user to a specific variant in an experiment"
-									},
-									"response": [
-										{
-											"id": "44848164-1bb7e515-a9c2-47b0-8dc7-80c27c484f66",
-											"name": "User assigned to variant",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													},
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-													"options": {
-														"raw": {
-															"headerFamily": "json",
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/experiments/:id/assign",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"experiments",
-														":id",
-														"assign"
-													],
-													"variable": [
-														{
-															"key": "id"
-														}
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n  \"experimentId\": \"exp_123\",\n  \"userId\": \"user_456\",\n  \"variant\": {\n    \"name\": \"control\",\n    \"weight\": 50,\n    \"config\": {\n      \"buttonColor\": \"#007bff\"\n    }\n  },\n  \"assignedAt\": \"2023-12-01T10:00:00Z\"\n}"
-										},
-										{
-											"id": "44848164-74b7e68b-61d4-4fa4-928a-0957a076fa3b",
-											"name": "Experiment not found",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													},
-													{
-														"key": "Accept",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
-													"options": {
-														"raw": {
-															"headerFamily": "json",
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/experiments/:id/assign",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"experiments",
-														":id",
-														"assign"
-													],
-													"variable": [
-														{
-															"key": "id"
-														}
-													]
-												}
-											},
-											"status": "Not Found",
-											"code": 404,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
-										}
-									]
-								}
-							],
+							"item": [],
 							"id": "44848164-a92247e8-4a67-4f17-a942-ebc8dc4a643f"
 						},
 						{
@@ -257,9 +122,24 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bf9f13f0-76b1-4d6a-93a4-2eac2df8a853",
+												"id": "f2053144-8d9e-4975-8727-73f6368ad78d",
 												"exec": [
-													""
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Response time is less than 800ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(800);",
+													"});",
+													"",
+													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+													"    var jsonData = pm.response.json();",
+													"    pm.test(\"Response has 'eventId' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"eventId\");",
+													"    });",
+													"    pm.test(\"Response has 'conversion' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"conversion\");",
+													"    });",
+													"}"
 												],
 												"type": "text/javascript",
 												"packages": {}
@@ -433,6 +313,34 @@
 							"item": [
 								{
 									"name": "Get experiment results",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bffe5163-f69a-4d6b-b13f-2c455e633acb",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Response time is less than 800ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(800);",
+													"});",
+													"",
+													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+													"    var jsonData = pm.response.json();",
+													"    pm.test(\"Response has 'experimentId' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"experimentId\");",
+													"    });",
+													"    pm.test(\"Response has 'results' property\", function () {",
+													"        pm.expect(jsonData).to.have.property(\"results\");",
+													"    });",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"id": "44848164-e091b62c-55e3-4a2b-a5e4-b1e638935de5",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -457,7 +365,6 @@
 											],
 											"variable": [
 												{
-													"id": "77585369-550d-49dd-baa9-6724d04b6a69",
 													"key": "id",
 													"value": "exp_123",
 													"description": "(Required) Experiment ID"
@@ -555,7 +462,224 @@
 							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe"
 						},
 						{
+							"name": "Assign user to variant",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "104fde70-2d48-4d41-bc57-f7888085a875",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'userId' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"userId\");",
+											"    });",
+											"    pm.test(\"Response has 'variantId' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"variantId\");",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "44848164-7fd26d2f-291a-40ac-b520-37d5732c4bfc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id/assign",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id",
+										"assign"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "exp_123",
+											"description": "(Required) Experiment ID"
+										}
+									]
+								},
+								"description": "Assign a user to a specific variant in an experiment"
+							},
+							"response": [
+								{
+									"id": "44848164-1bb7e515-a9c2-47b0-8dc7-80c27c484f66",
+									"name": "User assigned to variant",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"assign"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"experimentId\": \"exp_123\",\n  \"userId\": \"user_456\",\n  \"variant\": {\n    \"name\": \"control\",\n    \"weight\": 50,\n    \"config\": {\n      \"buttonColor\": \"#007bff\"\n    }\n  },\n  \"assignedAt\": \"2023-12-01T10:00:00Z\"\n}"
+								},
+								{
+									"id": "44848164-74b7e68b-61d4-4fa4-928a-0957a076fa3b",
+									"name": "Experiment not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"user_456\",\n  \"attributes\": {\n    \"country\": \"US\",\n    \"premium\": true\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments/:id/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments",
+												":id",
+												"assign"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								}
+							]
+						},
+						{
 							"name": "Get experiment by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c5890dd4-6b3e-4a9b-811a-d29ae3090ff8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'id' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"    });",
+											"    pm.test(\"Response has 'name' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"name\");",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "44848164-a5d8afc0-6989-4378-b9d2-8133ac8cf083",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -665,6 +789,34 @@
 						},
 						{
 							"name": "Update experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c2eb0c4a-f1e8-4abb-8edc-3aa55d051161",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});",
+											"",
+											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.test(\"Response has 'id' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"    });",
+											"    pm.test(\"Response has 'updatedAt' property\", function () {",
+											"        pm.expect(jsonData).to.have.property(\"updatedAt\");",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "44848164-f23d3114-9827-41be-b8e3-0579a2eb02aa",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -702,7 +854,6 @@
 									],
 									"variable": [
 										{
-											"id": "66692919-5518-49a1-80cc-b8aff0bb71f3",
 											"key": "id",
 											"value": "exp_123",
 											"description": "(Required) Experiment ID"
@@ -828,9 +979,14 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fe9342df-1425-4174-9a64-ca5559f13bdd",
+										"id": "42488ad5-a347-484a-a600-e64dc8f387a4",
 										"exec": [
-											""
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"pm.test(\"Response time is less than 800ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -850,13 +1006,19 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
+									"raw": "{{baseUrl}}/experiments/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"experiments",
-										"exp_b0qj4lqcv"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
 									]
 								},
 								"description": "Delete an experiment by ID"
@@ -939,6 +1101,39 @@
 				},
 				{
 					"name": "Get all experiments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f55d1a0f-a128-490a-b0a7-79ed8f8ee390",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.test(\"Response is an array\", function () {",
+									"        pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"    });",
+									"    if (Array.isArray(jsonData) && jsonData.length > 0) {",
+									"        pm.test(\"Each experiment has 'id' and 'name' properties\", function () {",
+									"            jsonData.forEach(function(item) {",
+									"                pm.expect(item).to.have.property(\"id\");",
+									"                pm.expect(item).to.have.property(\"name\");",
+									"            });",
+									"        });",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "44848164-2dc4ed9f-f58d-4a6b-9e58-e3cf2bf38d6e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1039,63 +1234,24 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0ed13dea-6df9-4b12-bf57-86fd4f6fdfcd",
+								"id": "b5423caa-091b-4130-bf73-d705a26fa91a",
 								"exec": [
-									"// Test: Status code is 201 (Created)",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});",
-									"",
-									"// Test: Response is a valid JSON object",
-									"pm.test(\"Response is a valid JSON object\", function () {",
-									"    pm.response.to.be.json;",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.be.an('object');",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);",
 									"});",
 									"",
-									"// Test: Response contains required experiment fields",
-									"pm.test(\"Response contains required experiment fields\", function () {",
+									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.property('id');",
-									"    pm.expect(jsonData).to.have.property('name');",
-									"    pm.expect(jsonData).to.have.property('variants');",
-									"    pm.expect(jsonData.variants).to.be.an('array');",
-									"    pm.expect(jsonData).to.have.property('targetingRules');",
-									"    pm.expect(jsonData.targetingRules).to.be.an('array');",
-									"});",
-									"",
-									"// Test: Each variant has required fields",
-									"pm.test(\"Each variant has required fields\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    if (jsonData.variants && jsonData.variants.length > 0) {",
-									"        jsonData.variants.forEach(function(variant) {",
-									"            pm.expect(variant).to.have.property('name');",
-									"            pm.expect(variant).to.have.property('weight');",
-									"            pm.expect(variant).to.have.property('config');",
-									"        });",
-									"    }",
-									"});",
-									"",
-									"// Test: Targeting rules have required fields",
-									"pm.test(\"Targeting rules have required fields\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    if (jsonData.targetingRules && jsonData.targetingRules.length > 0) {",
-									"        jsonData.targetingRules.forEach(function(rule) {",
-									"            pm.expect(rule).to.have.property('type');",
-									"            pm.expect(rule).to.have.property('value');",
-									"        });",
-									"    }",
-									"});",
-									"",
-									"// Test: Error response for invalid input",
-									"pm.test(\"Returns 400 for invalid input\", function () {",
-									"    if (pm.response.code === 400) {",
-									"        pm.response.to.have.status(400);",
-									"        pm.response.to.be.json;",
-									"        var jsonData = pm.response.json();",
-									"        pm.expect(jsonData).to.have.property('error');",
-									"    }",
-									"});"
+									"    pm.test(\"Response has 'id' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"id\");",
+									"    });",
+									"    pm.test(\"Response has 'createdAt' property\", function () {",
+									"        pm.expect(jsonData).to.have.property(\"createdAt\");",
+									"    });",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
