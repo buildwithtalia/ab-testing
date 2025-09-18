@@ -125,7 +125,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-    put:
+    patch:
       tags:
         - Experiments
       summary: Update experiment

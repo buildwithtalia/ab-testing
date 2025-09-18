@@ -822,7 +822,7 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -867,7 +867,7 @@
 									"id": "44848164-4740a607-65d4-4cfd-8e2b-4d5e049edd52",
 									"name": "Experiment updated successfully",
 									"originalRequest": {
-										"method": "PUT",
+										"method": "PATCH",
 										"header": [
 											{
 												"key": "Content-Type",
@@ -921,7 +921,7 @@
 									"id": "44848164-89c8ad4e-f94b-4e04-b645-aac56eaff395",
 									"name": "Experiment not found",
 									"originalRequest": {
-										"method": "PUT",
+										"method": "PATCH",
 										"header": [
 											{
 												"key": "Content-Type",
