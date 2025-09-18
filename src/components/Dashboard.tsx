@@ -79,18 +79,9 @@ export const Dashboard: React.FC = () => {
 
   const handleCreateExperiment = async (experiment: Omit<Experiment, 'id' | 'createdAt' | 'updatedAt'>) => {
     try {
-      const response = await apiService.createExperiment({
-        name: experiment.name,
-        description: experiment.description,
-        variants: experiment.variants.map(v => ({
-          name: v.name,
-          trafficPercentage: v.trafficPercentage || v.weight || 0
-        }))
-      });
-      if (response.success) {
-        await loadExperiments(); // Refresh the list
-        setView('list');
-      }
+      await apiService.createExperiment(experiment);
+      await loadExperiments(); // Refresh the list
+      setView('list');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create experiment');
     }

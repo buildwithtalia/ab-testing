@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "npx ts-node server/index.ts",
+    "server": "npx tsc --project tsconfig.server.json && node dist/index.js",
     "dev": "concurrently \"npm run server\" \"npm run start\""
   },
   "eslintConfig": {

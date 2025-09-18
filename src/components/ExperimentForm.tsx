@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, X, AlertCircle } from 'lucide-react';
-import { Experiment, Variant } from '../types/experiment';
+import { Experiment, Variant, SegmentationRule } from '../types/experiment';
 
 interface ExperimentFormProps {
   onSubmit: (experiment: Omit<Experiment, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -24,6 +24,10 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
       { id: 'a', name: 'Control', trafficPercentage: 50 },
       { id: 'b', name: 'Variant B', trafficPercentage: 50 }
     ]
+  );
+  
+  const [segmentationRules, setSegmentationRules] = useState<SegmentationRule[]>(
+    experiment?.segmentationRules || []
   );
   
   const [errors, setErrors] = useState<{[key: string]: string}>({});
@@ -88,6 +92,24 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
     setVariants(newVariants);
   };
 
+  // Segmentation rule management
+  const addSegmentationRule = () => {
+    setSegmentationRules([
+      ...segmentationRules,
+      { field: '', operator: 'equals', value: '' }
+    ]);
+  };
+
+  const removeSegmentationRule = (index: number) => {
+    setSegmentationRules(segmentationRules.filter((_, i) => i !== index));
+  };
+
+  const updateSegmentationRule = (index: number, field: keyof SegmentationRule, value: any) => {
+    const newRules = [...segmentationRules];
+    newRules[index] = { ...newRules[index], [field]: value };
+    setSegmentationRules(newRules);
+  };
+
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
     
@@ -107,6 +129,22 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
     variants.forEach((variant, index) => {
       if (!variant.name.trim()) {
         newErrors[`variant_${index}_name`] = 'Variant name is required';
+      }
+    });
+
+    // Validate segmentation rules
+    segmentationRules.forEach((rule, index) => {
+      if (!rule.field.trim()) {
+        newErrors[`segment_${index}_field`] = 'Field is required';
+      }
+      if (!rule.value || (Array.isArray(rule.value) && rule.value.length === 0)) {
+        newErrors[`segment_${index}_value`] = 'Value is required';
+      }
+      if (['in', 'not_in'].includes(rule.operator) && !Array.isArray(rule.value)) {
+        newErrors[`segment_${index}_value`] = 'Array value required for this operator';
+      }
+      if (['greater_than', 'less_than'].includes(rule.operator) && isNaN(Number(rule.value))) {
+        newErrors[`segment_${index}_value`] = 'Numeric value required for this operator';
       }
     });
     
@@ -129,7 +167,8 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
         ...v,
         conversions: 0,
         visitors: 0
-      }))
+      })),
+      segmentationRules: segmentationRules.length > 0 ? segmentationRules : undefined
     };
     
     onSubmit(experimentData);
@@ -279,6 +318,132 @@ export const ExperimentForm: React.FC<ExperimentFormProps> = ({
             <div className="flex items-center gap-2 mt-2 text-red-600 text-sm">
               <AlertCircle size={14} />
               {errors.traffic}
+            </div>
+          )}
+        </div>
+
+        {/* Segmentation Rules Section */}
+        <div className="form-group">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <label className="form-label mb-0">Segmentation Rules</label>
+              <p className="text-sm text-gray-600 mt-1">
+                Define criteria to target specific users. All rules must match for user eligibility.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={addSegmentationRule}
+              className="btn btn-primary text-sm"
+            >
+              <Plus size={14} />
+              Add Rule
+            </button>
+          </div>
+
+          {segmentationRules.length === 0 ? (
+            <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500">
+              <p>No segmentation rules defined. All users will be eligible for this experiment.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {segmentationRules.map((rule, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="font-medium text-gray-900">Rule {index + 1}</h4>
+                    <button
+                      type="button"
+                      onClick={() => removeSegmentationRule(index)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="form-label">Field</label>
+                      <input
+                        type="text"
+                        value={rule.field}
+                        onChange={(e) => updateSegmentationRule(index, 'field', e.target.value)}
+                        className="form-input"
+                        placeholder="e.g., country, device, age"
+                      />
+                      {errors[`segment_${index}_field`] && (
+                        <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+                          <AlertCircle size={14} />
+                          {errors[`segment_${index}_field`]}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="form-label">Operator</label>
+                      <select
+                        value={rule.operator}
+                        onChange={(e) => updateSegmentationRule(index, 'operator', e.target.value as SegmentationRule['operator'])}
+                        className="form-input"
+                      >
+                        <option value="equals">Equals</option>
+                        <option value="not_equals">Not Equals</option>
+                        <option value="in">In Array</option>
+                        <option value="not_in">Not In Array</option>
+                        <option value="greater_than">Greater Than</option>
+                        <option value="less_than">Less Than</option>
+                        <option value="contains">Contains</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="form-label">Value</label>
+                      {['in', 'not_in'].includes(rule.operator) ? (
+                        <input
+                          type="text"
+                          value={Array.isArray(rule.value) ? rule.value.join(', ') : ''}
+                          onChange={(e) => {
+                            const values = e.target.value.split(',').map(v => v.trim()).filter(v => v);
+                            updateSegmentationRule(index, 'value', values);
+                          }}
+                          className="form-input"
+                          placeholder="value1, value2, value3"
+                        />
+                      ) : (
+                        <input
+                          type={['greater_than', 'less_than'].includes(rule.operator) ? 'number' : 'text'}
+                          value={Array.isArray(rule.value) ? rule.value.join(', ') : rule.value}
+                          onChange={(e) => {
+                            const value = ['greater_than', 'less_than'].includes(rule.operator) 
+                              ? parseFloat(e.target.value) || 0
+                              : e.target.value;
+                            updateSegmentationRule(index, 'value', value);
+                          }}
+                          className="form-input"
+                          placeholder={
+                            ['greater_than', 'less_than'].includes(rule.operator) 
+                              ? 'e.g., 18' 
+                              : 'e.g., US, mobile'
+                          }
+                        />
+                      )}
+                      {errors[`segment_${index}_value`] && (
+                        <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+                          <AlertCircle size={14} />
+                          {errors[`segment_${index}_value`]}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 p-2 bg-blue-50 rounded text-sm text-blue-700">
+                    <strong>Preview:</strong> {rule.field || 'field'} {rule.operator || 'operator'} {
+                      Array.isArray(rule.value) 
+                        ? `[${rule.value.join(', ')}]`
+                        : rule.value || 'value'
+                    }
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

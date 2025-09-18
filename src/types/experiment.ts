@@ -1,3 +1,9 @@
+export interface SegmentationRule {
+  field: string; // e.g., 'country', 'device', 'age', 'premium'
+  operator: 'equals' | 'not_equals' | 'in' | 'not_in' | 'greater_than' | 'less_than' | 'contains';
+  value: string | number | (string | number)[];
+}
+
 export interface Variant {
   id?: string;
   name: string;
@@ -14,6 +20,7 @@ export interface Experiment {
   description: string;
   status: 'draft' | 'running' | 'completed';
   variants: Variant[];
+  segmentationRules?: SegmentationRule[];
   startDate?: Date | string;
   endDate?: Date | string;
   createdAt: Date | string;

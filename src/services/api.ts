@@ -58,17 +58,20 @@ class ApiService {
   }
 
   // Create a new experiment
-  async createExperiment(experimentData: {
-    name: string;
-    description: string;
-    variants: Array<{
-      name: string;
-      trafficPercentage: number;
-    }>;
-  }): Promise<ApiResponse<Experiment>> {
-    return this.request<ApiResponse<Experiment>>('/experiments', {
+  async createExperiment(experimentData: Omit<Experiment, 'id' | 'createdAt' | 'updatedAt'>): Promise<Experiment> {
+    // Convert frontend variant format to API format
+    const apiData = {
+      ...experimentData,
+      variants: experimentData.variants.map(v => ({
+        name: v.name,
+        weight: v.trafficPercentage || v.weight || 0,
+        config: v.config || {}
+      }))
+    };
+    
+    return this.request<Experiment>('/experiments', {
       method: 'POST',
-      body: JSON.stringify(experimentData),
+      body: JSON.stringify(apiData),
     });
   }
 
