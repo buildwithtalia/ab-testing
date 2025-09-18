@@ -1,40 +1,17 @@
-name: Run AB Testing API Collection with Newman
+name: Automated API tests using Postman CLI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
-  run-newman:
+  automated-api-tests:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install Newman
-        run: npm install -g newman
-
-      - name: Fetch AB Testing API collection from Postman API
-        id: fetch_collection
-        env:
-          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      - uses: actions/checkout@v4
+      - name: Install Postman CLI
         run: |
-          curl -s -H "X-Api-Key: $POSTMAN_API_KEY" \
-            https://api.getpostman.com/collections/44848164-9dba0c54-cd90-427e-9dbb-373c3ff741e9 \
-            -o collection.json
-
-      - name: Run Newman with AB Testing API collection
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
         run: |
-          newman run collection.json \
-            --reporters cli,junit \
-            --reporter-junit-export newman-results.xml
+          postman collection run "44848164-9dba0c54-cd90-427e-9dbb-373c3ff741e9"
