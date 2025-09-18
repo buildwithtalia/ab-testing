@@ -448,7 +448,7 @@ app.get('/api/experiments/:id', (req, res) => {
 });
 
 // Update experiment
-app.put('/api/experiments/:id', (req, res) => {
+app.patch('/api/experiments/:id', (req, res) => {
   try {
     const experimentIndex = experiments.findIndex(exp => exp.id === req.params.id);
     
@@ -818,7 +818,7 @@ app.listen(PORT, () => {
   console.log(`   GET    /api/experiments`);
   console.log(`   POST   /api/experiments`);
   console.log(`   GET    /api/experiments/:id`);
-  console.log(`   PUT    /api/experiments/:id`);
+  console.log(`   PATCH  /api/experiments/:id`);
   console.log(`   DELETE /api/experiments/:id`);
   console.log(`   POST   /api/experiments/:id/assign`);
   console.log(`   POST   /api/experiments/:id/track`);

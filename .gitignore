@@ -48,3 +48,6 @@ logs
 # Optional eslint cache
 .eslintcache
 node_modules
+
+# TypeScript build output
+/dist

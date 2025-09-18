@@ -80,6 +80,27 @@ class ApiService {
     });
   }
 
+  // Update experiment
+  async updateExperiment(id: string, experimentData: Partial<{
+    name: string;
+    description: string;
+    status: Experiment['status'];
+    variants: Array<{
+      name: string;
+      weight?: number;
+      trafficPercentage?: number;
+      config?: Record<string, any>;
+    }>;
+    targetingRules: any[];
+    startDate: string | Date;
+    endDate: string | Date;
+  }>): Promise<Experiment> {
+    return this.request<Experiment>(`/experiments/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(experimentData),
+    });
+  }
+
   // Health check
   async healthCheck(): Promise<{ status: string; timestamp: string; experimentsCount: number }> {
     return this.request('/health');

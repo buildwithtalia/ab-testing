@@ -220,6 +220,52 @@ Create a new experiment with the provided data.
 }
 ```
 
+### Update Experiment
+Update an experiment with the provided data. This endpoint allows partial updates - only provide the fields you want to change.
+
+**PATCH** `/experiments/:id`
+
+**Parameters:**
+- `id` (string): The experiment ID
+
+**Request Body:**
+```json
+{
+  "name": "Updated Experiment Name",
+  "description": "Updated description",
+  "status": "draft",
+  "variants": [
+    {
+      "name": "Control",
+      "weight": 50,
+      "config": {}
+    },
+    {
+      "name": "Treatment",
+      "weight": 50,
+      "config": {}
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "id": "1",
+  "name": "Updated Experiment Name",
+  "description": "Updated description",
+  "status": "draft",
+  "variants": [...],
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T12:00:00.000Z"
+}
+```
+
+**Error Responses:**
+- **404:** Experiment not found
+- **400:** Invalid variant weights (must sum to 100)
+
 ### Update Experiment Status (Generic)
 Update an experiment's status directly. This is a more flexible alternative to the specific start/stop endpoints.
 
