@@ -1439,45 +1439,6 @@
 				}
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0"
-		},
-		{
-			"name": "Generate Python Server Stub for AB Testing API",
-			"id": "44848164-7706e605-b204-49d9-9208-f1dcfcd962f7",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"task\":\"generate complete python server stub for AB Testing API with routes, controllers, models, validation, error handling, example responses, unit tests, and requirements.txt\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.example.com/generate-python-stub",
-					"protocol": "https",
-					"host": [
-						"api",
-						"example",
-						"com"
-					],
-					"path": [
-						"generate-python-stub"
-					]
-				},
-				"description": "Generated from cURL: curl -X POST https://api.example.com/generate-python-stub -H \"Content-Type: application/json\" -d \"{\\\"task\\\":\\\"generate complete python server stub for AB Testing API with routes, controllers, models, validation, error handling, example responses, unit tests, and requirements.txt\\\"}\""
-			},
-			"response": []
 		}
 	],
 	"variable": [
