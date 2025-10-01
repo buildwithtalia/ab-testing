@@ -1159,7 +1159,7 @@
 								"experiments"
 							]
 						},
-						"description": "Retrieve a list of all experiments"
+						"description": "Retrieve a list of all A/B testing experiments. Supports optional query parameters for filtering and pagination. All request URLs use HTTPS."
 					},
 					"response": [
 						{
