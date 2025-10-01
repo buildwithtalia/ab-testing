@@ -307,7 +307,8 @@
 									]
 								}
 							],
-							"id": "44848164-42285454-5668-4edc-8bfb-1f9fee8ca743"
+							"id": "44848164-42285454-5668-4edc-8bfb-1f9fee8ca743",
+							"description": "Endpoints for tracking conversion events for a specific experiment. Use these endpoints to record user actions and conversions for analytics."
 						},
 						{
 							"name": "results",
@@ -460,7 +461,8 @@
 									]
 								}
 							],
-							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe"
+							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe",
+							"description": "Endpoints for retrieving statistical results and analytics for a specific experiment. Use these endpoints to analyze experiment performance and outcomes."
 						},
 						{
 							"name": "Assign user to variant",
