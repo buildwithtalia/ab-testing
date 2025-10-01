@@ -100,7 +100,8 @@
 					]
 				}
 			],
-			"id": "44848164-1ec8e4ac-4242-479c-9d03-c28e366b5987"
+			"id": "44848164-1ec8e4ac-4242-479c-9d03-c28e366b5987",
+			"description": "Endpoints related to API health checks. Use this folder to verify the operational status of the AB Testing API."
 		},
 		{
 			"name": "experiments",
@@ -1097,7 +1098,8 @@
 							]
 						}
 					],
-					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633"
+					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633",
+					"description": "Endpoints for operations on a specific experiment, identified by its ID. Includes assignment, tracking, updating, deleting, and retrieving results for a single experiment. Path variable `id` refers to the experiment's unique identifier."
 				},
 				{
 					"name": "Get all experiments",
@@ -1438,7 +1440,8 @@
 					]
 				}
 			],
-			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0"
+			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
+			"description": "Endpoints for managing A/B testing experiments. Use this folder to create, list, and manage experiments and their associated resources."
 		}
 	],
 	"variable": [
