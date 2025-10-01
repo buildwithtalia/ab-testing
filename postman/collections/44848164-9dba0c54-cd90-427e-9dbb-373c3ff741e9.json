@@ -1507,6 +1507,43 @@
 							"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
 						}
 					]
+				},
+				{
+					"name": "Create user segments",
+					"id": "44848164-21178fbf-efd1-43fa-b5f9-33c24c607fdc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"description\": \"Define custom groups of users based on attributes such as demographics, behavior, or device type for targeted experiments.\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/experiments/segments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments",
+								"segments"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request POST '{{baseUrl}}/experiments/segments' --header 'Content-Type: application/json' --data-raw '{\"description\": \"Define custom groups of users based on attributes such as demographics, behavior, or device type for targeted experiments.\"}'"
+					},
+					"response": []
 				}
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
