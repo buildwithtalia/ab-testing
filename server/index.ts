@@ -54,6 +54,23 @@ interface VariantResults {
   isWinner: boolean;
 }
 
+interface UserSegment {
+  id: string;
+  name?: string;
+  demographics?: {
+    ageRange?: string;
+    gender?: string;
+    location?: string;
+  };
+  behavior?: {
+    purchaseHistory?: string;
+    activityLevel?: string;
+  };
+  deviceType?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -75,6 +92,7 @@ app.use((error: any, req: any, res: any, next: any) => {
 let experiments: Experiment[] = [];
 let assignments: VariantAssignment[] = [];
 let events: TrackingEvent[] = [];
+let userSegments: UserSegment[] = [];
 
 // Initialize with sample data
 const sampleExperiments: Experiment[] = [
@@ -424,6 +442,44 @@ app.post('/api/experiments', (req, res) => {
     res.status(500).json({ 
       error: 'Internal server error',
       message: 'Failed to create experiment'
+    });
+  }
+});
+
+// Create user segment
+app.post('/api/experiments/segments', (req, res) => {
+  try {
+    const { name, demographics, behavior, deviceType } = req.body;
+    
+    // Validate that at least one segmentation criteria is provided
+    if (!demographics && !behavior && !deviceType) {
+      return res.status(400).json({ 
+        error: 'Missing required fields',
+        message: 'At least one segmentation criteria (demographics, behavior, or deviceType) is required'
+      });
+    }
+
+    const newSegment: UserSegment = {
+      id: generateId(),
+      name: name || undefined,
+      demographics: demographics || undefined,
+      behavior: behavior || undefined,
+      deviceType: deviceType || undefined,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    userSegments.push(newSegment);
+    
+    res.status(201).json({
+      success: true,
+      message: 'User segment created successfully',
+      segment: newSegment
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: 'Failed to create user segment'
     });
   }
 });
@@ -817,6 +873,7 @@ app.listen(PORT, () => {
   console.log(`   GET    /api/health`);
   console.log(`   GET    /api/experiments`);
   console.log(`   POST   /api/experiments`);
+  console.log(`   POST   /api/experiments/segments`);
   console.log(`   GET    /api/experiments/:id`);
   console.log(`   PUT    /api/experiments/:id`);
   console.log(`   DELETE /api/experiments/:id`);
