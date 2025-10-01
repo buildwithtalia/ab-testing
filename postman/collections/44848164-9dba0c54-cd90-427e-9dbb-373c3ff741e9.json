@@ -192,7 +192,7 @@
 												}
 											]
 										},
-										"description": "Track a conversion event for an experiment. Records a user action or conversion for analytics purposes."
+										"description": "Track a conversion event for an experiment. Records a user action or conversion for analytics purposes. Path variable `id` is required for the experiment's unique identifier."
 									},
 									"response": [
 										{
@@ -1160,7 +1160,7 @@
 								"experiments"
 							]
 						},
-						"description": "Retrieve a list of all A/B testing experiments. Supports optional query parameters for filtering and pagination. All request URLs use HTTPS."
+						"description": "Retrieve a list of all A/B testing experiments. Supports optional query parameters for filtering and pagination. All request URLs use HTTPS. Query parameters: - filter (string, optional): Filter experiments by name or status. - page (integer, optional): Page number for pagination. - limit (integer, optional): Number of experiments per page."
 					},
 					"response": [
 						{
