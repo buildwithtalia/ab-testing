@@ -100,7 +100,8 @@
 					]
 				}
 			],
-			"id": "44848164-1ec8e4ac-4242-479c-9d03-c28e366b5987"
+			"id": "44848164-1ec8e4ac-4242-479c-9d03-c28e366b5987",
+			"description": "Endpoints related to checking the health status of the API. Useful for monitoring and uptime checks."
 		},
 		{
 			"name": "experiments",
@@ -1097,7 +1098,8 @@
 							]
 						}
 					],
-					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633"
+					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633",
+					"description": "Endpoints for operations on a specific experiment, identified by its unique ID. Includes retrieving, updating, assigning users, and deleting an experiment. Path variable `id` is required for all requests in this folder."
 				},
 				{
 					"name": "Get all experiments",
