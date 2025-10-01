@@ -191,7 +191,7 @@
 												}
 											]
 										},
-										"description": "Track a conversion event for an experiment"
+										"description": "Track a conversion event for an experiment. Records a user action or conversion for analytics purposes."
 									},
 									"response": [
 										{
@@ -538,7 +538,7 @@
 										}
 									]
 								},
-								"description": "Assign a user to a specific variant in an experiment"
+								"description": "Assign a user to a specific variant in an experiment. Path variable `id` refers to the experiment's unique identifier."
 							},
 							"response": [
 								{
@@ -1024,7 +1024,7 @@
 										}
 									]
 								},
-								"description": "Delete an experiment by ID"
+								"description": "Delete an experiment by ID. Returns 200 or 204 on success. Path variable `id` refers to the experiment's unique identifier."
 							},
 							"response": [
 								{
