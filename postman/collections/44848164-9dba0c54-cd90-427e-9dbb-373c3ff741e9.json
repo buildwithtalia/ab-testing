@@ -461,7 +461,8 @@
 									]
 								}
 							],
-							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe"
+							"id": "44848164-6ae25fd5-8a14-42c1-89b3-286c7a9aa3fe",
+							"description": "Endpoints for retrieving statistical results and analytics for experiments."
 						},
 						{
 							"name": "Assign user to variant",
