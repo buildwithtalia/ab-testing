@@ -306,8 +306,7 @@
 									]
 								}
 							],
-							"id": "44848164-42285454-5668-4edc-8bfb-1f9fee8ca743",
-							"description": "Endpoints for tracking conversion events for a specific experiment. Use these endpoints to record user actions and conversions for analytics."
+							"id": "44848164-42285454-5668-4edc-8bfb-1f9fee8ca743"
 						},
 						{
 							"name": "results",
