@@ -112,7 +112,8 @@
 						{
 							"name": "assign",
 							"item": [],
-							"id": "44848164-a92247e8-4a67-4f17-a942-ebc8dc4a643f"
+							"id": "44848164-a92247e8-4a67-4f17-a942-ebc8dc4a643f",
+							"description": "Endpoints for assigning users to experiment variants. Use these to allocate users to specific variants for A/B testing."
 						},
 						{
 							"name": "track",
@@ -1442,7 +1443,8 @@
 					]
 				}
 			],
-			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0"
+			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
+			"description": "Endpoints for managing A/B testing experiments, including listing and creating experiments. Organized for easy navigation and testing."
 		}
 	],
 	"variable": [
