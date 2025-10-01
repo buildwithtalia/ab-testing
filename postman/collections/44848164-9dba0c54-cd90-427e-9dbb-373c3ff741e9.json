@@ -374,7 +374,7 @@
 												}
 											]
 										},
-										"description": "Retrieve statistical results and analytics for an experiment"
+										"description": "Retrieve statistical results and analytics for an experiment. Path parameter 'id' is required and represents the unique identifier of the experiment. Returns experiment results including conversion rate, confidence interval, and p-value. Returns 404 if the experiment does not exist."
 									},
 									"response": [
 										{
@@ -458,6 +458,72 @@
 											"cookie": [],
 											"responseTime": null,
 											"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+										},
+										{
+											"id": "44848164-16410e89-171e-4e2e-b64a-fe84941ae7d4",
+											"name": "200 OK - Successful response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/results",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"results"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "12345",
+															"description": "The unique identifier of the experiment"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\"experimentId\":\"12345\",\"results\":{\"conversionRate\":0.25,\"confidenceInterval\":\"95%\",\"pValue\":0.03}}"
+										},
+										{
+											"id": "44848164-bd0a568d-d58f-493b-9e23-e365ffa27144",
+											"name": "404 Not Found - Experiment does not exist",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/experiments/:id/results",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"experiments",
+														":id",
+														"results"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "nonexistent",
+															"description": "The unique identifier of the experiment"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\"error\":\"Experiment not found\",\"code\":404}"
 										}
 									]
 								}
