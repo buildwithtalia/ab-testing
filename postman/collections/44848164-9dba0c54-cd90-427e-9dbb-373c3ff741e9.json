@@ -1511,6 +1511,43 @@
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
 			"description": "Endpoints for managing A/B testing experiments, including listing and creating experiments. Organized for easy navigation and testing."
+		},
+		{
+			"name": "Create user segment",
+			"id": "44848164-499faec5-8e2b-43ca-a314-5cb38e9f04c9",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/experiments/segments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"experiments",
+						"segments"
+					]
+				},
+				"description": "Generated from cURL: curl --location --request POST {{baseUrl}}/experiments/segments \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}'"
+			},
+			"response": []
 		}
 	],
 	"variable": [
