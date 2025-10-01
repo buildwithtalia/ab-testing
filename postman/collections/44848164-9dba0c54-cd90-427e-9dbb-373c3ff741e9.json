@@ -1297,7 +1297,7 @@
 								"experiments"
 							]
 						},
-						"description": "Create a new A/B testing experiment"
+						"description": "Create a new A/B testing experiment."
 					},
 					"response": [
 						{
