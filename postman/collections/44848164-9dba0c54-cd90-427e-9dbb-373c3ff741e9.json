@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "44848164-9dba0c54-cd90-427e-9dbb-373c3ff741e9",
 		"name": "AB Testing API",
+		"description": "This collection provides endpoints for managing A/B testing experiments, including creating, updating, deleting experiments, assigning users to variants, tracking conversion events, and retrieving experiment results. All endpoints use HTTPS and support authentication. The collection is organized into folders by resource and functionality for easy navigation and testing.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
