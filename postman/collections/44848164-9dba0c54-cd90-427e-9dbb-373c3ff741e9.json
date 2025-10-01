@@ -1507,6 +1507,43 @@
 							"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
 						}
 					]
+				},
+				{
+					"name": "Create User Segment",
+					"id": "44848164-53b70a18-1e5c-4c91-9a2e-2ddc78ee67c8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/experiments/segments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments",
+								"segments"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request POST '{{baseUrl}}/experiments/segments' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}'"
+					},
+					"response": []
 				}
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
