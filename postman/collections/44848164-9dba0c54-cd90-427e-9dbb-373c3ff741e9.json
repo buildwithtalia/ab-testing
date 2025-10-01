@@ -1511,43 +1511,6 @@
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
 			"description": "Endpoints for managing A/B testing experiments, including listing and creating experiments. Organized for easy navigation and testing."
-		},
-		{
-			"name": "Create user segment",
-			"id": "44848164-499faec5-8e2b-43ca-a314-5cb38e9f04c9",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/experiments/segments",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"experiments",
-						"segments"
-					]
-				},
-				"description": "Create a user segment for targeting experiments. Define custom groups of users based on attributes such as demographics, behavior, or device type. This endpoint enables experiments to target specific audiences rather than the entire user base.\n\nRequest body schema:\n{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}\n"
-			},
-			"response": []
 		}
 	],
 	"variable": [
