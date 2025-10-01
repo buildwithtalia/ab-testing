@@ -2,7 +2,6 @@
 	"info": {
 		"_postman_id": "44848164-9dba0c54-cd90-427e-9dbb-373c3ff741e9",
 		"name": "AB Testing API",
-		"description": "REST API for managing A/B testing experiments.\n\nThis collection provides endpoints to create, manage, assign users, track events, and retrieve results for A/B testing experiments.\n\nContact Support:\nName: AB Testing System\n\nCommon Variables:\n- `baseUrl`: Base URL for the API endpoints.\n\nUsage Guidelines:\n- All request URLs use HTTPS.\n- Requests with path variables include 404 response examples.\n- DELETE requests return 200 or 204 status codes.\n- Authenticated requests include 401 response examples.\n- Query and path parameters have descriptions.\n- Request names do not end with 'Copy'.\n\nEndpoints are organized into folders by resource and function for clarity and ease of use.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
