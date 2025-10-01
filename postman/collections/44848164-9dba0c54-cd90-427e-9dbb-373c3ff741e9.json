@@ -1541,7 +1541,7 @@
 								"segments"
 							]
 						},
-						"description": "Generated from cURL: curl --location --request POST '{{baseUrl}}/experiments/segments' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n  \"demographics\": {\n    \"ageRange\": \"string\",\n    \"gender\": \"string\",\n    \"location\": \"string\"\n  },\n  \"behavior\": {\n    \"purchaseHistory\": \"string\",\n    \"activityLevel\": \"string\"\n  },\n  \"deviceType\": \"string\"\n}'"
+						"description": "This endpoint enables creating user segments for targeted experiments. Define segments using demographics (ageRange, gender, location), behavior (purchaseHistory, activityLevel), and deviceType. Useful for customizing experiment targeting and analysis."
 					},
 					"response": []
 				}
