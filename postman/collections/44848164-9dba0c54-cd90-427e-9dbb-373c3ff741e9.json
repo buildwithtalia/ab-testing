@@ -1325,7 +1325,8 @@
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -1347,7 +1348,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+							"raw": "{\n  \"name\": \"CTA Change Experiment\",\n  \"description\": \"Testing different CTA options for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
