@@ -110,13 +110,19 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f2053144-8d9e-4975-8727-73f6368ad78d",
-												"exec": [
-													""
-												],
 												"type": "text/javascript",
-												"packages": {},
-												"requests": {}
+												"exec": [
+													"// Standard tests for POST track conversion event",
+													"pm.test(\"Status code is 2xx\", function () {",
+													"    pm.expect(pm.response.code).to.be.within(200, 299);",
+													"});",
+													"",
+													"pm.test(\"Response confirms event tracked\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).to.be.an(\"object\");",
+													"    pm.expect(jsonData).to.have.any.keys(\"success\", \"message\");",
+													"});"
+												]
 											}
 										}
 									],
