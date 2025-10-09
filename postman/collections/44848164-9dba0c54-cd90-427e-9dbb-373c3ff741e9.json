@@ -1596,7 +1596,47 @@
 				},
 				"description": "Generated from cURL: curl --request GET '{{baseUrl}}/experiments' --header 'Accept: application/json'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "44848164-54a8d416-4936-4b5b-8fc2-16db14975e65",
+					"name": "Success - List all experiments",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/experiments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Accept",
+							"value": "application/json",
+							"enabled": true
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "[{\"id\": \"exp1\", \"name\": \"Homepage Button Test\", \"description\": \"Test different button colors\"}]"
+				}
+			]
 		},
 		{
 			"name": "Create experiment",
@@ -1673,6 +1713,39 @@
 					]
 				},
 				"description": "Generated from cURL: curl --request PUT '{{baseUrl}}/experiments/:id' --header 'Content-Type: application/json' --data '{\"name\": \"Updated Experiment\", \"description\": \"Updated description\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete experiment",
+			"id": "44848164-306456c8-192a-4927-a342-2271d45673b4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/experiments/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"experiments",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --request DELETE '{{baseUrl}}/experiments/:id' --header 'Accept: application/json'"
 			},
 			"response": []
 		}
