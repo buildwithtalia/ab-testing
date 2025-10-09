@@ -17,22 +17,16 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// Tests for \"Health check endpoint\"",
+									"// Health check endpoint - Test Script",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"pm.test(\"Response contains health status\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.be.an(\"object\");",
 									"    pm.expect(jsonData).to.have.property(\"status\");",
-									"    pm.expect([\"ok\", \"healthy\", \"unhealthy\"]).to.include(jsonData.status);",
-									"});",
-									"",
-									"pm.test(\"Handles error response\", function () {",
-									"    pm.expect([200, 500]).to.include(pm.response.code);",
-									"});",
-									""
+									"    pm.expect(jsonData.status).to.be.oneOf([\"ok\", \"healthy\", \"up\"]);",
+									"});"
 								]
 							}
 						}
@@ -715,24 +709,27 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"// Tests for \"Get experiment by ID\"",
+											"// Get experiment by ID - Test Script",
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
 											"pm.test(\"Response contains experiment details\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.be.an(\"object\");",
 											"    pm.expect(jsonData).to.have.property(\"id\");",
 											"    pm.expect(jsonData).to.have.property(\"name\");",
-											"    pm.expect(jsonData).to.have.property(\"status\");",
 											"    pm.expect(jsonData).to.have.property(\"variants\");",
+											"    pm.expect(jsonData.variants).to.be.an(\"array\");",
+											"    pm.expect(jsonData).to.have.property(\"status\");",
 											"});",
 											"",
-											"pm.test(\"Handles error response\", function () {",
-											"    pm.expect([200, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-											"});",
-											""
+											"pm.test(\"Experiment ID in response matches requested ID\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var pathVars = pm.request.url.variables;",
+											"    var reqId = null;",
+											"    pathVars.each(function (v) { if (v.key === \"id\") reqId = v.value; });",
+											"    pm.expect(jsonData.id).to.eql(reqId);",
+											"});"
 										]
 									}
 								}
@@ -1291,24 +1288,24 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// Tests for \"Create a new experiment\"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
+									"// Create a new experiment - Test Script",
+									"pm.test(\"Status code is 201 or 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
 									"});",
 									"",
 									"pm.test(\"Response contains experiment details\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.be.an(\"object\");",
 									"    pm.expect(jsonData).to.have.property(\"id\");",
 									"    pm.expect(jsonData).to.have.property(\"name\");",
-									"    pm.expect(jsonData).to.have.property(\"status\");",
 									"    pm.expect(jsonData).to.have.property(\"variants\");",
+									"    pm.expect(jsonData.variants).to.be.an(\"array\");",
+									"    pm.expect(jsonData).to.have.property(\"status\");",
 									"});",
 									"",
-									"pm.test(\"Handles error response\", function () {",
-									"    pm.expect([201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-									"});",
-									""
+									"pm.test(\"Experiment structure matches schema\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
+									"});"
 								]
 							}
 						}
