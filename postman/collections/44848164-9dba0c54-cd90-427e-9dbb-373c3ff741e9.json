@@ -112,16 +112,21 @@
 											"script": {
 												"type": "text/javascript",
 												"exec": [
-													"// Standard tests for POST track conversion event",
-													"pm.test(\"Status code is 2xx\", function () {",
-													"    pm.expect(pm.response.code).to.be.within(200, 299);",
+													"// Tests for \"Track conversion event\"",
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect([200, 201]).to.include(pm.response.code);",
 													"});",
 													"",
-													"pm.test(\"Response confirms event tracked\", function () {",
+													"pm.test(\"Response contains tracking confirmation\", function () {",
 													"    var jsonData = pm.response.json();",
 													"    pm.expect(jsonData).to.be.an(\"object\");",
 													"    pm.expect(jsonData).to.have.any.keys(\"success\", \"message\");",
-													"});"
+													"});",
+													"",
+													"pm.test(\"Handles error response\", function () {",
+													"    pm.expect([200, 201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+													"});",
+													""
 												]
 											}
 										}
