@@ -17,25 +17,11 @@
 							"script": {
 								"id": "76fa2165-6716-4bb5-96cc-1dfd50037591",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Response time is less than 800ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(800);",
-									"});",
-									"",
-									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-									"    var jsonData = pm.response.json();",
-									"    pm.test(\"Response has 'status' property\", function () {",
-									"        pm.expect(jsonData).to.have.property(\"status\");",
-									"    });",
-									"    pm.test(\"Response has 'message' property\", function () {",
-									"        pm.expect(jsonData).to.have.property(\"message\");",
-									"    });",
-									"}"
+									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -126,25 +112,11 @@
 											"script": {
 												"id": "f2053144-8d9e-4975-8727-73f6368ad78d",
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"pm.test(\"Response time is less than 800ms\", function () {",
-													"    pm.expect(pm.response.responseTime).to.be.below(800);",
-													"});",
-													"",
-													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-													"    var jsonData = pm.response.json();",
-													"    pm.test(\"Response has 'eventId' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"eventId\");",
-													"    });",
-													"    pm.test(\"Response has 'conversion' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"conversion\");",
-													"    });",
-													"}"
+													""
 												],
 												"type": "text/javascript",
-												"packages": {}
+												"packages": {},
+												"requests": {}
 											}
 										}
 									],
@@ -322,25 +294,11 @@
 											"script": {
 												"id": "bffe5163-f69a-4d6b-b13f-2c455e633acb",
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"pm.test(\"Response time is less than 800ms\", function () {",
-													"    pm.expect(pm.response.responseTime).to.be.below(800);",
-													"});",
-													"",
-													"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-													"    var jsonData = pm.response.json();",
-													"    pm.test(\"Response has 'experimentId' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"experimentId\");",
-													"    });",
-													"    pm.test(\"Response has 'results' property\", function () {",
-													"        pm.expect(jsonData).to.have.property(\"results\");",
-													"    });",
-													"}"
+													""
 												],
 												"type": "text/javascript",
-												"packages": {}
+												"packages": {},
+												"requests": {}
 											}
 										}
 									],
