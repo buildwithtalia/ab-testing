@@ -506,13 +506,26 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "104fde70-2d48-4d41-bc57-f7888085a875",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
+										"exec": [
+											"// Tests for \"Assign user to variant\"",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect([200, 201]).to.include(pm.response.code);",
+											"});",
+											"",
+											"pm.test(\"Response contains assignment details\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an(\"object\");",
+											"    pm.expect(jsonData).to.have.property(\"userId\");",
+											"    pm.expect(jsonData).to.have.property(\"variant\");",
+											"    pm.expect(jsonData).to.have.property(\"experimentId\");",
+											"});",
+											"",
+											"pm.test(\"Handles error response\", function () {",
+											"    pm.expect([200, 201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+											"});",
+											""
+										]
 									}
 								}
 							],
@@ -976,13 +989,28 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "42488ad5-a347-484a-a600-e64dc8f387a4",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
+										"exec": [
+											"// Tests for \"Delete experiment\"",
+											"pm.test(\"Status code is 200 or 204\", function () {",
+											"    pm.expect([200, 204]).to.include(pm.response.code);",
+											"});",
+											"",
+											"pm.test(\"Response is empty or contains confirmation\", function () {",
+											"    if (pm.response.code === 200) {",
+											"        var jsonData = pm.response.json();",
+											"        pm.expect(jsonData).to.be.an(\"object\");",
+											"        pm.expect(jsonData).to.have.any.keys(\"success\", \"message\");",
+											"    } else {",
+											"        pm.expect(pm.response.text()).to.be.oneOf([\"\", null]);",
+											"    }",
+											"});",
+											"",
+											"pm.test(\"Handles error response\", function () {",
+											"    pm.expect([200, 204, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+											"});",
+											""
+										]
 									}
 								}
 							],
@@ -1219,13 +1247,27 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b5423caa-091b-4130-bf73-d705a26fa91a",
-								"exec": [
-									""
-								],
 								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
+								"exec": [
+									"// Tests for \"Create a new experiment\"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains experiment details\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"    pm.expect(jsonData).to.have.property(\"status\");",
+									"    pm.expect(jsonData).to.have.property(\"variants\");",
+									"});",
+									"",
+									"pm.test(\"Handles error response\", function () {",
+									"    pm.expect([201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+									"});",
+									""
+								]
 							}
 						}
 					],
@@ -1410,6 +1452,35 @@
 				},
 				{
 					"name": "Create User Segment",
+					"event": [
+						{
+							"id": "8b972a5d-6655-4fe9-9046-a98bfce436f8",
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Tests for \"Create User Segment\"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains segment details\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"demographics\");",
+									"    pm.expect(jsonData).to.have.property(\"behavior\");",
+									"    pm.expect(jsonData).to.have.property(\"deviceType\");",
+									"});",
+									"",
+									"pm.test(\"Handles error response\", function () {",
+									"    pm.expect([201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+									"});",
+									""
+								]
+							}
+						}
+					],
 					"id": "44848164-53b70a18-1e5c-4c91-9a2e-2ddc78ee67c8",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
