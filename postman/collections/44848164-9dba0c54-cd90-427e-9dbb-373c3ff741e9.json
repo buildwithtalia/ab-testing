@@ -1570,6 +1570,111 @@
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
 			"description": "Endpoints for managing A/B testing experiments, including listing and creating experiments. Organized for easy navigation and testing."
+		},
+		{
+			"name": "Get all experiments",
+			"id": "44848164-4f929a4c-6b57-4115-bb8b-5ec5df0baf20",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/experiments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"experiments"
+					]
+				},
+				"description": "Generated from cURL: curl --request GET '{{baseUrl}}/experiments' --header 'Accept: application/json'"
+			},
+			"response": []
+		},
+		{
+			"name": "Create experiment",
+			"id": "44848164-8ee70391-6ca9-409e-8595-88b08a38308b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"New Experiment\", \"description\": \"A/B test for feature X\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/experiments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"experiments"
+					]
+				},
+				"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments' --header 'Content-Type: application/json' --data '{\"name\": \"New Experiment\", \"description\": \"A/B test for feature X\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Update experiment",
+			"id": "44848164-1fc8fd0e-e814-444e-acd5-229af9227973",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Updated Experiment\", \"description\": \"Updated description\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/experiments/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"experiments",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --request PUT '{{baseUrl}}/experiments/:id' --header 'Content-Type: application/json' --data '{\"name\": \"Updated Experiment\", \"description\": \"Updated description\"}'"
+			},
+			"response": []
 		}
 	],
 	"variable": [
