@@ -15,13 +15,25 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "76fa2165-6716-4bb5-96cc-1dfd50037591",
-								"exec": [
-									""
-								],
 								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
+								"exec": [
+									"// Tests for \"Health check endpoint\"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains health status\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData).to.have.property(\"status\");",
+									"    pm.expect([\"ok\", \"healthy\", \"unhealthy\"]).to.include(jsonData.status);",
+									"});",
+									"",
+									"pm.test(\"Handles error response\", function () {",
+									"    pm.expect([200, 500]).to.include(pm.response.code);",
+									"});",
+									""
+								]
 							}
 						}
 					],
@@ -694,13 +706,27 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c5890dd4-6b3e-4a9b-811a-d29ae3090ff8",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
+										"exec": [
+											"// Tests for \"Get experiment by ID\"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response contains experiment details\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an(\"object\");",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"status\");",
+											"    pm.expect(jsonData).to.have.property(\"variants\");",
+											"});",
+											"",
+											"pm.test(\"Handles error response\", function () {",
+											"    pm.expect([200, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+											"});",
+											""
+										]
 									}
 								}
 							],
@@ -817,13 +843,27 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c2eb0c4a-f1e8-4abb-8edc-3aa55d051161",
-										"exec": [
-											""
-										],
 										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
+										"exec": [
+											"// Tests for \"Update experiment\"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response contains updated experiment details\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an(\"object\");",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"status\");",
+											"    pm.expect(jsonData).to.have.property(\"variants\");",
+											"});",
+											"",
+											"pm.test(\"Handles error response\", function () {",
+											"    pm.expect([200, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
+											"});",
+											""
+										]
 									}
 								}
 							],
