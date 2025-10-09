@@ -1088,13 +1088,23 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f55d1a0f-a128-490a-b0a7-79ed8f8ee390",
-								"exec": [
-									""
-								],
 								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
+								"exec": [
+									"// Standard tests for GET all experiments",
+									"pm.test(\"Status code is 2xx\", function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test(\"Response is an array of experiments with expected properties\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    if (jsonData.length > 0) {",
+									"        pm.expect(jsonData[0]).to.have.property(\"id\");",
+									"        pm.expect(jsonData[0]).to.have.property(\"name\");",
+									"        pm.expect(jsonData[0]).to.have.property(\"status\");",
+									"    }",
+									"});"
+								]
 							}
 						}
 					],
