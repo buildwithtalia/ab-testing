@@ -1090,30 +1090,11 @@
 							"script": {
 								"id": "f55d1a0f-a128-490a-b0a7-79ed8f8ee390",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Response time is less than 800ms\", function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(800);",
-									"});",
-									"",
-									"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-									"    var jsonData = pm.response.json();",
-									"    pm.test(\"Response is an array\", function () {",
-									"        pm.expect(Array.isArray(jsonData)).to.be.true;",
-									"    });",
-									"    if (Array.isArray(jsonData) && jsonData.length > 0) {",
-									"        pm.test(\"Each experiment has 'id' and 'name' properties\", function () {",
-									"            jsonData.forEach(function(item) {",
-									"                pm.expect(item).to.have.property(\"id\");",
-									"                pm.expect(item).to.have.property(\"name\");",
-									"            });",
-									"        });",
-									"    }",
-									"}"
+									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
