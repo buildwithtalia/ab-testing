@@ -849,24 +849,24 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"// Tests for \"Update experiment\"",
+											"// Update experiment - Test Script",
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
 											"pm.test(\"Response contains updated experiment details\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.be.an(\"object\");",
 											"    pm.expect(jsonData).to.have.property(\"id\");",
 											"    pm.expect(jsonData).to.have.property(\"name\");",
-											"    pm.expect(jsonData).to.have.property(\"status\");",
 											"    pm.expect(jsonData).to.have.property(\"variants\");",
+											"    pm.expect(jsonData.variants).to.be.an(\"array\");",
+											"    pm.expect(jsonData).to.have.property(\"status\");",
 											"});",
 											"",
-											"pm.test(\"Handles error response\", function () {",
-											"    pm.expect([200, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-											"});",
-											""
+											"pm.test(\"Experiment structure matches schema after update\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
+											"});"
 										]
 									}
 								}
