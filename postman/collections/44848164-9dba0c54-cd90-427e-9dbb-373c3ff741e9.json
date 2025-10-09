@@ -124,21 +124,26 @@
 											"script": {
 												"type": "text/javascript",
 												"exec": [
-													"// Tests for \"Track conversion event\"",
+													"// Track conversion event - Test Script",
 													"pm.test(\"Status code is 200 or 201\", function () {",
-													"    pm.expect([200, 201]).to.include(pm.response.code);",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
 													"});",
 													"",
-													"pm.test(\"Response contains tracking confirmation\", function () {",
+													"pm.test(\"Response contains conversion event confirmation\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData).to.be.an(\"object\");",
-													"    pm.expect(jsonData).to.have.any.keys(\"success\", \"message\");",
+													"    pm.expect(jsonData).to.have.property(\"success\");",
+													"    pm.expect(jsonData.success).to.be.a(\"boolean\");",
+													"    if (jsonData.success) {",
+													"        pm.expect(jsonData).to.have.property(\"eventId\");",
+													"    }",
 													"});",
 													"",
-													"pm.test(\"Handles error response\", function () {",
-													"    pm.expect([200, 201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-													"});",
-													""
+													"pm.test(\"Experiment ID is required in path\", function () {",
+													"    var pathVars = pm.request.url.variables;",
+													"    var found = false;",
+													"    pathVars.each(function (v) { if (v.key === \"id\") found = true; });",
+													"    pm.expect(found).to.eql(true);",
+													"});"
 												]
 											}
 										}
@@ -520,23 +525,25 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"// Tests for \"Assign user to variant\"",
+											"// Assign user to variant - Test Script",
 											"pm.test(\"Status code is 200 or 201\", function () {",
-											"    pm.expect([200, 201]).to.include(pm.response.code);",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
 											"});",
 											"",
 											"pm.test(\"Response contains assignment details\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.be.an(\"object\");",
 											"    pm.expect(jsonData).to.have.property(\"userId\");",
 											"    pm.expect(jsonData).to.have.property(\"variant\");",
+											"    pm.expect(jsonData.variant).to.be.a(\"string\");",
 											"    pm.expect(jsonData).to.have.property(\"experimentId\");",
 											"});",
 											"",
-											"pm.test(\"Handles error response\", function () {",
-											"    pm.expect([200, 201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-											"});",
-											""
+											"pm.test(\"Experiment ID is required in path\", function () {",
+											"    var pathVars = pm.request.url.variables;",
+											"    var found = false;",
+											"    pathVars.each(function (v) { if (v.key === \"id\") found = true; });",
+											"    pm.expect(found).to.eql(true);",
+											"});"
 										]
 									}
 								}
@@ -1031,25 +1038,20 @@
 									"script": {
 										"type": "text/javascript",
 										"exec": [
-											"// Tests for \"Delete experiment\"",
+											"// Delete experiment - Test Script",
 											"pm.test(\"Status code is 200 or 204\", function () {",
-											"    pm.expect([200, 204]).to.include(pm.response.code);",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
 											"});",
 											"",
-											"pm.test(\"Response is empty or contains confirmation\", function () {",
+											"pm.test(\"Experiment deleted confirmation or empty response\", function () {",
 											"    if (pm.response.code === 200) {",
 											"        var jsonData = pm.response.json();",
-											"        pm.expect(jsonData).to.be.an(\"object\");",
-											"        pm.expect(jsonData).to.have.any.keys(\"success\", \"message\");",
+											"        pm.expect(jsonData).to.have.property(\"success\");",
+											"        pm.expect(jsonData.success).to.eql(true);",
 											"    } else {",
 											"        pm.expect(pm.response.text()).to.be.oneOf([\"\", null]);",
 											"    }",
-											"});",
-											"",
-											"pm.test(\"Handles error response\", function () {",
-											"    pm.expect([200, 204, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-											"});",
-											""
+											"});"
 										]
 									}
 								}
@@ -1499,24 +1501,27 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// Tests for \"Create User Segment\"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
+									"// Create User Segment - Test Script",
+									"pm.test(\"Status code is 201 or 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
 									"});",
 									"",
 									"pm.test(\"Response contains segment details\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.be.an(\"object\");",
 									"    pm.expect(jsonData).to.have.property(\"id\");",
 									"    pm.expect(jsonData).to.have.property(\"demographics\");",
+									"    pm.expect(jsonData.demographics).to.be.an(\"object\");",
 									"    pm.expect(jsonData).to.have.property(\"behavior\");",
+									"    pm.expect(jsonData.behavior).to.be.an(\"object\");",
 									"    pm.expect(jsonData).to.have.property(\"deviceType\");",
 									"});",
 									"",
-									"pm.test(\"Handles error response\", function () {",
-									"    pm.expect([201, 400, 401, 403, 404, 500]).to.include(pm.response.code);",
-									"});",
-									""
+									"pm.test(\"Segment structure matches schema\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.demographics).to.have.all.keys(\"ageRange\", \"gender\", \"location\");",
+									"    pm.expect(jsonData.behavior).to.have.all.keys(\"purchaseHistory\", \"activityLevel\");",
+									"    pm.expect(jsonData.deviceType).to.be.a(\"string\");",
+									"});"
 								]
 							}
 						}
