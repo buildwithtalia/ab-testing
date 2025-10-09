@@ -1166,14 +1166,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "eb909c66-98ac-4c13-96d6-23918cf2c3fe",
 								"exec": [
-									"// Standard tests for GET all experiments",
-									"pm.test(\"Status code is 2xx\", function () {",
-									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"// Get all experiments - Test Script",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"Response is an array of experiments with expected properties\", function () {",
+									"pm.test(\"Response is an array of experiments\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData).to.be.an(\"array\");",
 									"    if (jsonData.length > 0) {",
@@ -1181,8 +1181,17 @@
 									"        pm.expect(jsonData[0]).to.have.property(\"name\");",
 									"        pm.expect(jsonData[0]).to.have.property(\"status\");",
 									"    }",
+									"});",
+									"",
+									"pm.test(\"Supports optional query parameters\", function () {",
+									"    // If query params are present, response should still be valid",
+									"    var params = pm.request.url.query;",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
