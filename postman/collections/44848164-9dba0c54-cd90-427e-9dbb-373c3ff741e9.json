@@ -847,7 +847,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "25cd4fd0-9dfa-4d71-b5b3-3013e51d5980",
 										"exec": [
 											"// Update experiment - Test Script",
 											"pm.test(\"Status code is 200\", function () {",
@@ -867,7 +867,10 @@
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
 											"});"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -914,7 +917,7 @@
 										}
 									]
 								},
-								"description": "Update an existing experiment"
+								"description": "DEPRECATED: This endpoint is deprecated and will be removed in a future release.\n\nUpdate an existing experiment."
 							},
 							"response": [
 								{
