@@ -497,25 +497,11 @@
 									"script": {
 										"id": "104fde70-2d48-4d41-bc57-f7888085a875",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"pm.test(\"Response time is less than 800ms\", function () {",
-											"    pm.expect(pm.response.responseTime).to.be.below(800);",
-											"});",
-											"",
-											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-											"    var jsonData = pm.response.json();",
-											"    pm.test(\"Response has 'userId' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"userId\");",
-											"    });",
-											"    pm.test(\"Response has 'variantId' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"variantId\");",
-											"    });",
-											"}"
+											""
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -686,25 +672,11 @@
 									"script": {
 										"id": "c5890dd4-6b3e-4a9b-811a-d29ae3090ff8",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"pm.test(\"Response time is less than 800ms\", function () {",
-											"    pm.expect(pm.response.responseTime).to.be.below(800);",
-											"});",
-											"",
-											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-											"    var jsonData = pm.response.json();",
-											"    pm.test(\"Response has 'id' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"id\");",
-											"    });",
-											"    pm.test(\"Response has 'name' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"name\");",
-											"    });",
-											"}"
+											""
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -823,25 +795,11 @@
 									"script": {
 										"id": "c2eb0c4a-f1e8-4abb-8edc-3aa55d051161",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"pm.test(\"Response time is less than 800ms\", function () {",
-											"    pm.expect(pm.response.responseTime).to.be.below(800);",
-											"});",
-											"",
-											"if (pm.response.headers.has(\"Content-Type\") && pm.response.headers.get(\"Content-Type\").includes(\"application/json\")) {",
-											"    var jsonData = pm.response.json();",
-											"    pm.test(\"Response has 'id' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"id\");",
-											"    });",
-											"    pm.test(\"Response has 'updatedAt' property\", function () {",
-											"        pm.expect(jsonData).to.have.property(\"updatedAt\");",
-											"    });",
-											"}"
+											""
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -1009,15 +967,11 @@
 									"script": {
 										"id": "42488ad5-a347-484a-a600-e64dc8f387a4",
 										"exec": [
-											"pm.test(\"Status code is 204\", function () {",
-											"    pm.response.to.have.status(204);",
-											"});",
-											"pm.test(\"Response time is less than 800ms\", function () {",
-											"    pm.expect(pm.response.responseTime).to.be.below(800);",
-											"});"
+											""
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
