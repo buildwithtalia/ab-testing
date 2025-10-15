@@ -1298,7 +1298,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "1edf2325-0b96-4b41-af6d-b0770098a835",
 								"exec": [
 									"// Create a new experiment - Test Script",
 									"pm.test(\"Status code is 201 or 200\", function () {",
@@ -1318,7 +1318,10 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
