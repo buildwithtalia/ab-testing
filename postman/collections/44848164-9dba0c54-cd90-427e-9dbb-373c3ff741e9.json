@@ -1309,11 +1309,11 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// Extract experiment ID and save to collection variable",
+									"// Extract experiment ID from response and store as collection variable",
 									"var jsonData = pm.response.json();",
 									"if (jsonData && jsonData.id) {",
 									"    pm.collectionVariables.set(\"experimentId\", jsonData.id);",
-									"    console.log(\"Experiment ID saved: \" + jsonData.id);",
+									"    console.log(\"Experiment ID stored: \" + jsonData.id);",
 									"}"
 								]
 							}
