@@ -1591,6 +1591,72 @@
 						"description": "This endpoint enables creating user segments for targeted experiments. Define segments using demographics (ageRange, gender, location), behavior (purchaseHistory, activityLevel), and deviceType. Useful for customizing experiment targeting and analysis."
 					},
 					"response": []
+				},
+				{
+					"name": "Start experiment",
+					"id": "44848164-4bc42086-64b8-41bf-8abb-bd85084d6788",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/experiments/{{experimentId}}/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments",
+								"{{experimentId}}",
+								"start"
+							]
+						},
+						"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/start' --header 'Content-Type: application/json' --header 'Accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Stop experiment",
+					"id": "44848164-39c32a6b-0642-44a4-94d0-2c712f2a3e45",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/experiments/{{experimentId}}/stop",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"experiments",
+								"{{experimentId}}",
+								"stop"
+							]
+						},
+						"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/stop' --header 'Content-Type: application/json' --header 'Accept: application/json'"
+					},
+					"response": []
 				}
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
