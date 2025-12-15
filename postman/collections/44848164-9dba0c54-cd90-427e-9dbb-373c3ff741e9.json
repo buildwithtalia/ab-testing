@@ -547,7 +547,16 @@
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.data).to.have.property(\"name\");",
 											"    pm.expect(jsonData.data).to.have.property(\"status\");",
-											"});"
+											"});",
+											"",
+											"// Save the experiment ID for use in subsequent requests",
+											"if (pm.response.code === 201) {",
+											"    const responseData = pm.response.json();",
+											"    if (responseData.success && responseData.data && responseData.data.id) {",
+											"        pm.environment.set('experimentId', responseData.data.id);",
+											"        console.log('Saved experiment ID:', responseData.data.id);",
+											"    }",
+											"}"
 										]
 									}
 								},
