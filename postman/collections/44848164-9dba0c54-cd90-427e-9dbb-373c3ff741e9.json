@@ -712,6 +712,236 @@
 							"description": "Endpoints for retrieving statistical results and analytics for experiments."
 						},
 						{
+							"name": "Create a new experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"// Extract experiment ID from response and store as collection variable",
+											"var jsonData = pm.response.json();",
+											"if (jsonData && jsonData.data && jsonData.data.id) {",
+											"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
+											"    console.log(\"Experiment ID stored: \" + jsonData.data.id);",
+											"}",
+											"",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Response contains experiment ID\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.have.property(\"id\");",
+											"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
+											"});",
+											"",
+											"pm.test(\"Experiment has required properties\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.have.property(\"name\");",
+											"    pm.expect(jsonData.data).to.have.property(\"status\");",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0d0f0d2b-2a80-4559-a9d6-8edcd179b935",
+										"exec": [
+											"// Generate unique experiment name with timestamp",
+											"const timestamp = Date.now();",
+											"const randomNum = Math.floor(Math.random() * 1000);",
+											"pm.variables.set(\"experimentName\", `Experiment_${timestamp}_${randomNum}`);",
+											"pm.variables.set(\"experimentDescription\", `Test experiment created at ${new Date().toISOString()}`);",
+											"",
+											"console.log(\"Generated experiment name: \" + pm.variables.get(\"experimentName\"));"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "44848164-9fabe4cc-220e-440d-801a-c6123cc9a57b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"{{experimentName}}\",\"description\":\"{{experimentDescription}}\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments"
+									]
+								},
+								"description": "Create a new A/B testing experiment."
+							},
+							"response": [
+								{
+									"id": "44848164-e5923baf-6de7-4afe-ab85-30e0d11e4e33",
+									"name": "Experiment created successfully",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"id\": \"exp_123\",\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"status\": \"active\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 5406.448534006107,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 9737.649033849912,\n          \"key_1\": 3973,\n          \"key_2\": true,\n          \"key_3\": 5598\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 8877.374895683886,\n      \"conditions\": [\n        {\n          \"key_0\": 6605\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 461.17992625095303,\n          \"key_2\": 2178,\n          \"key_3\": 9113\n        }\n      ]\n    }\n  ],\n  \"createdAt\": \"2023-12-01T10:00:00Z\",\n  \"updatedAt\": \"2023-12-01T10:00:00Z\",\n  \"startDate\": \"2023-12-01T10:00:00Z\",\n  \"endDate\": \"2023-12-31T23:59:59Z\"\n}"
+								},
+								{
+									"id": "44848164-697bb220-62af-483e-b1e0-188baa5db0ca",
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
+								},
+								{
+									"id": "44848164-f57bc08e-7a42-4118-bd51-04143588c85f",
+									"name": "API tests added",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/experiments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"experiments"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
+								}
+							]
+						},
+						{
 							"name": "Get experiment by ID",
 							"event": [
 								{
@@ -1049,6 +1279,138 @@
 							]
 						},
 						{
+							"name": "Start experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Experiment status is active\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data.status).to.eql(\"active\");",
+											"});",
+											"",
+											"pm.test(\"Response contains experiment data\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.be.true;",
+											"    pm.expect(jsonData.data).to.have.property(\"id\");",
+											"});"
+										]
+									}
+								}
+							],
+							"id": "44848164-4bc42086-64b8-41bf-8abb-bd85084d6788",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"scripts\": {\n    \"test\": \"// Start experiment - Test Script\\npm.test(\\\"Status code is 200\\\", function () {\\n    pm.response.to.have.status(200);\\n});\\n\\npm.test(\\\"Response has correct structure\\\", function () {\\n    var jsonData = pm.response.json();\\n    pm.expect(jsonData).to.have.property(\\\"data\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"id\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"startDate\\\");\\n});\\n\\n// Capture and store startDate from response\\nif (pm.response.code === 200) {\\n    var jsonData = pm.response.json();\\n    if (jsonData.data && jsonData.data.startDate) {\\n        pm.collectionVariables.set(\\\"startDate\\\", jsonData.data.startDate);\\n        console.log(\\\"Start date captured: \\\" + jsonData.data.startDate);\\n    }\\n}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments/{{experimentId}}/start",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										"{{experimentId}}",
+										"start"
+									]
+								},
+								"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/start' --header 'Content-Type: application/json' --header 'Accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "Stop experiment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Experiment status is stopped\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data.status).to.eql(\"stopped\");",
+											"});",
+											"",
+											"pm.test(\"Response contains experiment data\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.be.true;",
+											"    pm.expect(jsonData.data).to.have.property(\"id\");",
+											"});"
+										]
+									}
+								}
+							],
+							"id": "44848164-39c32a6b-0642-44a4-94d0-2c712f2a3e45",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"scripts\": {\n    \"test\": \"// Stop experiment - Test Script\\npm.test(\\\"Status code is 200\\\", function () {\\n    pm.response.to.have.status(200);\\n});\\n\\npm.test(\\\"Response has correct structure\\\", function () {\\n    var jsonData = pm.response.json();\\n    pm.expect(jsonData).to.have.property(\\\"data\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"id\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"endDate\\\");\\n});\\n\\n// Capture and store endDate from response\\nif (pm.response.code === 200) {\\n    var jsonData = pm.response.json();\\n    if (jsonData.data && jsonData.data.endDate) {\\n        pm.collectionVariables.set(\\\"endDate\\\", jsonData.data.endDate);\\n        console.log(\\\"End date captured: \\\" + jsonData.data.endDate);\\n    }\\n}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/experiments/{{experimentId}}/stop",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										"{{experimentId}}",
+										"stop"
+									]
+								},
+								"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/stop' --header 'Content-Type: application/json' --header 'Accept: application/json'"
+							},
+							"response": []
+						},
+						{
 							"name": "Delete experiment",
 							"event": [
 								{
@@ -1185,236 +1547,6 @@
 					"description": "Endpoints for operations on a specific experiment, identified by its unique ID. Includes retrieving, updating, assigning users, and deleting an experiment. Path variable `id` is required for all requests in this folder."
 				},
 				{
-					"name": "Create a new experiment",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"// Extract experiment ID from response and store as collection variable",
-									"var jsonData = pm.response.json();",
-									"if (jsonData && jsonData.data && jsonData.data.id) {",
-									"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
-									"    console.log(\"Experiment ID stored: \" + jsonData.data.id);",
-									"}",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response contains experiment ID\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data).to.have.property(\"id\");",
-									"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
-									"});",
-									"",
-									"pm.test(\"Experiment has required properties\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data).to.have.property(\"name\");",
-									"    pm.expect(jsonData.data).to.have.property(\"status\");",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "0d0f0d2b-2a80-4559-a9d6-8edcd179b935",
-								"exec": [
-									"// Generate unique experiment name with timestamp",
-									"const timestamp = Date.now();",
-									"const randomNum = Math.floor(Math.random() * 1000);",
-									"pm.variables.set(\"experimentName\", `Experiment_${timestamp}_${randomNum}`);",
-									"pm.variables.set(\"experimentDescription\", `Test experiment created at ${new Date().toISOString()}`);",
-									"",
-									"console.log(\"Generated experiment name: \" + pm.variables.get(\"experimentName\"));"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "44848164-9fabe4cc-220e-440d-801a-c6123cc9a57b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"name\":\"{{experimentName}}\",\"description\":\"{{experimentDescription}}\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/experiments",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"experiments"
-							]
-						},
-						"description": "Create a new A/B testing experiment."
-					},
-					"response": [
-						{
-							"id": "44848164-e5923baf-6de7-4afe-ab85-30e0d11e4e33",
-							"name": "Experiment created successfully",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
-									"options": {
-										"raw": {
-											"headerFamily": "json",
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/experiments",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"experiments"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"responseTime": null,
-							"body": "{\n  \"id\": \"exp_123\",\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"status\": \"active\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 5406.448534006107,\n      \"conditions\": [\n        {\n          \"key_0\": true,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 9737.649033849912,\n          \"key_1\": 3973,\n          \"key_2\": true,\n          \"key_3\": 5598\n        }\n      ]\n    },\n    {\n      \"type\": \"percentage\",\n      \"value\": 8877.374895683886,\n      \"conditions\": [\n        {\n          \"key_0\": 6605\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 461.17992625095303,\n          \"key_2\": 2178,\n          \"key_3\": 9113\n        }\n      ]\n    }\n  ],\n  \"createdAt\": \"2023-12-01T10:00:00Z\",\n  \"updatedAt\": \"2023-12-01T10:00:00Z\",\n  \"startDate\": \"2023-12-01T10:00:00Z\",\n  \"endDate\": \"2023-12-31T23:59:59Z\"\n}"
-						},
-						{
-							"id": "44848164-697bb220-62af-483e-b1e0-188baa5db0ca",
-							"name": "Bad request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
-									"options": {
-										"raw": {
-											"headerFamily": "json",
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/experiments",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"experiments"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"responseTime": null,
-							"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
-						},
-						{
-							"id": "44848164-f57bc08e-7a42-4118-bd51-04143588c85f",
-							"name": "API tests added",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"Button Color Test\",\n  \"description\": \"Testing different button colors for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
-									"options": {
-										"raw": {
-											"headerFamily": "json",
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/experiments",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"experiments"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": null,
-							"cookie": [],
-							"responseTime": null,
-							"body": "{\"id\":\"12345\",\"name\":\"Button Color Test\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}"
-						}
-					]
-				},
-				{
 					"name": "Get all experiments",
 					"event": [
 						{
@@ -1538,138 +1670,6 @@
 							"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
 						}
 					]
-				},
-				{
-					"name": "Start experiment",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Experiment status is active\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data.status).to.eql(\"active\");",
-									"});",
-									"",
-									"pm.test(\"Response contains experiment data\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.be.true;",
-									"    pm.expect(jsonData.data).to.have.property(\"id\");",
-									"});"
-								]
-							}
-						}
-					],
-					"id": "44848164-4bc42086-64b8-41bf-8abb-bd85084d6788",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"scripts\": {\n    \"test\": \"// Start experiment - Test Script\\npm.test(\\\"Status code is 200\\\", function () {\\n    pm.response.to.have.status(200);\\n});\\n\\npm.test(\\\"Response has correct structure\\\", function () {\\n    var jsonData = pm.response.json();\\n    pm.expect(jsonData).to.have.property(\\\"data\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"id\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"startDate\\\");\\n});\\n\\n// Capture and store startDate from response\\nif (pm.response.code === 200) {\\n    var jsonData = pm.response.json();\\n    if (jsonData.data && jsonData.data.startDate) {\\n        pm.collectionVariables.set(\\\"startDate\\\", jsonData.data.startDate);\\n        console.log(\\\"Start date captured: \\\" + jsonData.data.startDate);\\n    }\\n}\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/experiments/{{experimentId}}/start",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"experiments",
-								"{{experimentId}}",
-								"start"
-							]
-						},
-						"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/start' --header 'Content-Type: application/json' --header 'Accept: application/json'"
-					},
-					"response": []
-				},
-				{
-					"name": "Stop experiment",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Experiment status is stopped\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.data.status).to.eql(\"stopped\");",
-									"});",
-									"",
-									"pm.test(\"Response contains experiment data\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.be.true;",
-									"    pm.expect(jsonData.data).to.have.property(\"id\");",
-									"});"
-								]
-							}
-						}
-					],
-					"id": "44848164-39c32a6b-0642-44a4-94d0-2c712f2a3e45",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"scripts\": {\n    \"test\": \"// Stop experiment - Test Script\\npm.test(\\\"Status code is 200\\\", function () {\\n    pm.response.to.have.status(200);\\n});\\n\\npm.test(\\\"Response has correct structure\\\", function () {\\n    var jsonData = pm.response.json();\\n    pm.expect(jsonData).to.have.property(\\\"data\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"id\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"endDate\\\");\\n});\\n\\n// Capture and store endDate from response\\nif (pm.response.code === 200) {\\n    var jsonData = pm.response.json();\\n    if (jsonData.data && jsonData.data.endDate) {\\n        pm.collectionVariables.set(\\\"endDate\\\", jsonData.data.endDate);\\n        console.log(\\\"End date captured: \\\" + jsonData.data.endDate);\\n    }\\n}\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/experiments/{{experimentId}}/stop",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"experiments",
-								"{{experimentId}}",
-								"stop"
-							]
-						},
-						"description": "Generated from cURL: curl --request POST '{{baseUrl}}/experiments/{{experimentId}}/stop' --header 'Content-Type: application/json' --header 'Accept: application/json'"
-					},
-					"response": []
 				}
 			],
 			"id": "44848164-f164068c-db59-4cc7-b2c0-3c00f2525cd0",
