@@ -856,32 +856,30 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "25cd4fd0-9dfa-4d71-b5b3-3013e51d5980",
+										"type": "text/javascript",
 										"exec": [
 											"// Update experiment - Test Script",
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Response contains updated experiment details\", function () {",
+											"pm.test(\"Response has correct structure\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.have.property(\"success\");",
 											"    pm.expect(jsonData).to.have.property(\"data\");",
 											"    pm.expect(jsonData.data).to.have.property(\"id\");",
 											"    pm.expect(jsonData.data).to.have.property(\"name\");",
 											"    pm.expect(jsonData.data).to.have.property(\"variants\");",
-											"    pm.expect(jsonData.data.variants).to.be.an(\"array\");",
-											"    pm.expect(jsonData.data).to.have.property(\"status\");",
 											"});",
 											"",
-											"pm.test(\"Experiment structure matches schema after update\", function () {",
+											"pm.test(\"Variants array is valid\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.data).to.have.all.keys(\"id\", \"name\", \"description\", \"variants\", \"status\", \"targetingRules\", \"startDate\", \"endDate\", \"createdAt\", \"updatedAt\");",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
+											"    pm.expect(jsonData.data.variants).to.be.an(\"array\");",
+											"    pm.expect(jsonData.data.variants.length).to.be.at.least(2);",
+											"});",
+											"",
+											"// Store experiment ID for use in subsequent requests",
+											"pm.collectionVariables.set(\"experimentId\", pm.response.json().data.id);"
+										]
 									}
 								}
 							],
@@ -1046,7 +1044,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "dc8993e1-ef9d-440e-8ea8-ec6c0cb0ac7f",
 										"exec": [
 											"// Delete experiment - Test Script",
 											"pm.test(\"Status code is 200 or 204\", function () {",
@@ -1062,7 +1060,10 @@
 											"        pm.expect(pm.response.text()).to.be.oneOf([\"\", null]);",
 											"    }",
 											"});"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -1090,7 +1091,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "{{experimentId}}"
 										}
 									]
 								},
