@@ -761,7 +761,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "{{experimentId}}"
 										}
 									]
 								},
