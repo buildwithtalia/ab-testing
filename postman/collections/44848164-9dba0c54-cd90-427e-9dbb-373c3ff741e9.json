@@ -517,7 +517,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "ae5c11fc-c960-4586-8f8e-1f9391508947",
 										"exec": [
 											"// Assign user to variant - Test Script",
 											"pm.test(\"Status code is 200 or 201\", function () {",
@@ -538,7 +538,10 @@
 											"    pathVars.each(function (v) { if (v.key === \"id\") found = true; });",
 											"    pm.expect(found).to.eql(true);",
 											"});"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -581,8 +584,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "exp_123",
-											"description": "(Required) Experiment ID"
+											"value": "{{experimentId}}"
 										}
 									]
 								},
