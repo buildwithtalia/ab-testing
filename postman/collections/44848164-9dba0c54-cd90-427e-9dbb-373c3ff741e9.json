@@ -1193,9 +1193,8 @@
 									],
 									"variable": [
 										{
-											"id": "a3e3d7d2-fb9a-4ed1-99a9-85c829147caf",
 											"key": "id",
-											"value": "{{experimentId}}"
+											"value": ":id"
 										}
 									]
 								}
