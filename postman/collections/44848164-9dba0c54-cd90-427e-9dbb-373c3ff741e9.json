@@ -1167,39 +1167,6 @@
 									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
 								}
 							]
-						},
-						{
-							"name": "Get experiment by ID",
-							"id": "44848164-3d4a5d84-5ad4-4af7-b6a2-28ceccdccbba",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/experiments/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"experiments",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ":id"
-										}
-									]
-								}
-							},
-							"response": []
 						}
 					],
 					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633",
