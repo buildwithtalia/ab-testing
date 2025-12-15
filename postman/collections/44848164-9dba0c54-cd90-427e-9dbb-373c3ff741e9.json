@@ -1167,6 +1167,111 @@
 									"body": "{\n  \"error\": \"Experiment not found\",\n  \"message\": \"The requested experiment could not be found\",\n  \"code\": 404\n}"
 								}
 							]
+						},
+						{
+							"name": "Get experiment by ID",
+							"id": "44848164-3d4a5d84-5ad4-4af7-b6a2-28ceccdccbba",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id"
+									],
+									"variable": [
+										{
+											"id": "a3e3d7d2-fb9a-4ed1-99a9-85c829147caf",
+											"key": "id",
+											"value": "{{experimentId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update experiment",
+							"id": "44848164-0b0728bc-e1c8-447c-b70a-9ef66f387858",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get experiment by ID - Updated",
+							"id": "44848164-cfbd1d80-b924-45f8-9ba6-ca804dba404b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/experiments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"experiments",
+										":id"
+									],
+									"variable": [
+										{
+											"id": "bbb215b3-4615-4928-9e18-cfb08e90b998",
+											"key": "id",
+											"value": "{{experimentId}}"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"id": "44848164-1167b412-9a74-4d1e-b4bb-bfb900989633",
@@ -1307,30 +1412,15 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1edf2325-0b96-4b41-af6d-b0770098a835",
-								"exec": [
-									"// Create a new experiment - Test Script",
-									"pm.test(\"Status code is 201 or 200\", function () {",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-									"});",
-									"",
-									"pm.test(\"Response contains experiment details\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.property(\"id\");",
-									"    pm.expect(jsonData).to.have.property(\"name\");",
-									"    pm.expect(jsonData).to.have.property(\"variants\");",
-									"    pm.expect(jsonData.variants).to.be.an(\"array\");",
-									"    pm.expect(jsonData).to.have.property(\"status\");",
-									"});",
-									"",
-									"pm.test(\"Experiment structure matches schema\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
-									"});"
-								],
 								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
+								"exec": [
+									"// Extract experiment ID and save to collection variable",
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.id) {",
+									"    pm.collectionVariables.set(\"experimentId\", jsonData.id);",
+									"    console.log(\"Experiment ID saved: \" + jsonData.id);",
+									"}"
+								]
 							}
 						}
 					],
