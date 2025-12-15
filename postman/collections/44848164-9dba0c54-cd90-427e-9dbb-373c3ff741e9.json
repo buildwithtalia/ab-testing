@@ -1321,6 +1321,24 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0d0f0d2b-2a80-4559-a9d6-8edcd179b935",
+								"exec": [
+									"// Generate unique experiment name with timestamp",
+									"const timestamp = Date.now();",
+									"const randomNum = Math.floor(Math.random() * 1000);",
+									"pm.variables.set(\"experimentName\", `Experiment_${timestamp}_${randomNum}`);",
+									"pm.variables.set(\"experimentDescription\", `Test experiment created at ${new Date().toISOString()}`);",
+									"",
+									"console.log(\"Generated experiment name: \" + pm.variables.get(\"experimentName\"));"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "44848164-9fabe4cc-220e-440d-801a-c6123cc9a57b",
@@ -1341,10 +1359,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"CTA Change Experiment\",\n  \"description\": \"Testing different CTA options for conversion\",\n  \"variants\": [\n    {\n      \"name\": \"control\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#007bff\"\n      }\n    },\n    {\n      \"name\": \"red_button\",\n      \"weight\": 50,\n      \"config\": {\n        \"buttonColor\": \"#dc3545\"\n      }\n    }\n  ],\n  \"targetingRules\": [\n    {\n      \"type\": \"percentage\",\n      \"value\": 100\n    }\n  ]\n}",
+							"raw": "{\"name\":\"{{experimentName}}\",\"description\":\"{{experimentDescription}}\",\"variants\":[{\"name\":\"control\",\"weight\":50,\"config\":{\"buttonColor\":\"#007bff\"}},{\"name\":\"red_button\",\"weight\":50,\"config\":{\"buttonColor\":\"#dc3545\"}}],\"targetingRules\":[{\"type\":\"percentage\",\"value\":100}]}",
 							"options": {
 								"raw": {
-									"headerFamily": "json",
 									"language": "json"
 								}
 							}
