@@ -15,19 +15,25 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "fb3494ab-16f3-42b1-8347-f042426c804b",
 								"exec": [
-									"// Health check endpoint - Test Script",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"pm.test(\"Response contains health status\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.property(\"status\");",
-									"    pm.expect(jsonData.status).to.be.oneOf([\"ok\", \"healthy\", \"up\"]);",
+									"    pm.expect(jsonData.data).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"API is healthy\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('healthy');",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
