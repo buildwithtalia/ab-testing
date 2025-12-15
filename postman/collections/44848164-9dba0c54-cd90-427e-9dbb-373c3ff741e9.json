@@ -707,7 +707,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
+										"id": "1455b73f-6111-4773-8f72-49e20845ef08",
 										"exec": [
 											"// Get experiment by ID - Test Script",
 											"pm.test(\"Status code is 200\", function () {",
@@ -730,7 +730,10 @@
 											"    pathVars.each(function (v) { if (v.key === \"id\") reqId = v.value; });",
 											"    pm.expect(jsonData.id).to.eql(reqId);",
 											"});"
-										]
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -747,13 +750,19 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/experiments/exp_b0qj4lqcv",
+									"raw": "{{baseUrl}}/experiments/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"experiments",
-										"exp_b0qj4lqcv"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
 									]
 								},
 								"description": "Retrieve a specific experiment by its ID"
