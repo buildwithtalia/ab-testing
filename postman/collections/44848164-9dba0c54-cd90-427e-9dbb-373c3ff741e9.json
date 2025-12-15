@@ -550,8 +550,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "exp_123",
-													"description": "(Required) Experiment ID"
+													"value": "{{experimentId}}"
 												}
 											]
 										},
