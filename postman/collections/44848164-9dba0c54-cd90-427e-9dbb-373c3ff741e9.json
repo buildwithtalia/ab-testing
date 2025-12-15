@@ -1308,15 +1308,18 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "dc1e7475-4120-4e2c-80f5-dd76d8aba143",
 								"exec": [
 									"// Extract experiment ID from response and store as collection variable",
 									"var jsonData = pm.response.json();",
-									"if (jsonData && jsonData.id) {",
-									"    pm.collectionVariables.set(\"experimentId\", jsonData.id);",
-									"    console.log(\"Experiment ID stored: \" + jsonData.id);",
+									"if (jsonData && jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
+									"    console.log(\"Experiment ID stored: \" + jsonData.data.id);",
 									"}"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
