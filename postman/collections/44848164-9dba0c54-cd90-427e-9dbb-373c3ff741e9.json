@@ -1652,6 +1652,15 @@
 								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"scripts\": {\n    \"test\": \"// Stop experiment - Test Script\\npm.test(\\\"Status code is 200\\\", function () {\\n    pm.response.to.have.status(200);\\n});\\n\\npm.test(\\\"Response has correct structure\\\", function () {\\n    var jsonData = pm.response.json();\\n    pm.expect(jsonData).to.have.property(\\\"data\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"id\\\");\\n    pm.expect(jsonData.data).to.have.property(\\\"endDate\\\");\\n});\\n\\n// Capture and store endDate from response\\nif (pm.response.code === 200) {\\n    var jsonData = pm.response.json();\\n    if (jsonData.data && jsonData.data.endDate) {\\n        pm.collectionVariables.set(\\\"endDate\\\", jsonData.data.endDate);\\n        console.log(\\\"End date captured: \\\" + jsonData.data.endDate);\\n    }\\n}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{baseUrl}}/experiments/{{experimentId}}/stop",
 							"host": [
