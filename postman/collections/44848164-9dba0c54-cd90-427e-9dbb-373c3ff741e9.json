@@ -315,7 +315,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"type": "text/javascript",
+												"id": "26389063-1f33-4c94-9957-cafabc9afb20",
 												"exec": [
 													"// Track conversion event - Test Script",
 													"pm.test(\"Status code is 200 or 201\", function () {",
@@ -327,7 +327,7 @@
 													"    pm.expect(jsonData).to.have.property(\"success\");",
 													"    pm.expect(jsonData.success).to.be.a(\"boolean\");",
 													"    if (jsonData.success) {",
-													"        pm.expect(jsonData).to.have.property(\"eventId\");",
+													"        pm.expect(jsonData.data).to.have.property(\"eventId\");",
 													"    }",
 													"});",
 													"",
@@ -337,7 +337,10 @@
 													"    pathVars.each(function (v) { if (v.key === \"id\") found = true; });",
 													"    pm.expect(found).to.eql(true);",
 													"});"
-												]
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
 											}
 										}
 									],
@@ -380,8 +383,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "exp_123",
-													"description": "(Required) Experiment ID"
+													"value": "{{experimentId}}"
 												}
 											]
 										},
