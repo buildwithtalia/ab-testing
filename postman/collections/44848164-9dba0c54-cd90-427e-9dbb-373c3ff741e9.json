@@ -865,16 +865,18 @@
 											"",
 											"pm.test(\"Response contains updated experiment details\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.have.property(\"id\");",
-											"    pm.expect(jsonData).to.have.property(\"name\");",
-											"    pm.expect(jsonData).to.have.property(\"variants\");",
-											"    pm.expect(jsonData.variants).to.be.an(\"array\");",
-											"    pm.expect(jsonData).to.have.property(\"status\");",
+											"    pm.expect(jsonData).to.have.property(\"success\");",
+											"    pm.expect(jsonData).to.have.property(\"data\");",
+											"    pm.expect(jsonData.data).to.have.property(\"id\");",
+											"    pm.expect(jsonData.data).to.have.property(\"name\");",
+											"    pm.expect(jsonData.data).to.have.property(\"variants\");",
+											"    pm.expect(jsonData.data.variants).to.be.an(\"array\");",
+											"    pm.expect(jsonData.data).to.have.property(\"status\");",
 											"});",
 											"",
 											"pm.test(\"Experiment structure matches schema after update\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData).to.have.all.keys(\"id\", \"name\", \"variants\", \"status\");",
+											"    pm.expect(jsonData.data).to.have.all.keys(\"id\", \"name\", \"description\", \"variants\", \"status\", \"targetingRules\", \"startDate\", \"endDate\", \"createdAt\", \"updatedAt\");",
 											"});"
 										],
 										"type": "text/javascript",
@@ -921,8 +923,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "exp_123",
-											"description": "(Required) Experiment ID"
+											"value": "{{experimentId}}"
 										}
 									]
 								},
