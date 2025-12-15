@@ -1315,18 +1315,31 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dc1e7475-4120-4e2c-80f5-dd76d8aba143",
+								"type": "text/javascript",
 								"exec": [
 									"// Extract experiment ID from response and store as collection variable",
 									"var jsonData = pm.response.json();",
 									"if (jsonData && jsonData.data && jsonData.data.id) {",
 									"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
 									"    console.log(\"Experiment ID stored: \" + jsonData.data.id);",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
+									"}",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response contains experiment ID\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property(\"id\");",
+									"    pm.collectionVariables.set(\"experimentId\", jsonData.data.id);",
+									"});",
+									"",
+									"pm.test(\"Experiment has required properties\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.have.property(\"name\");",
+									"    pm.expect(jsonData.data).to.have.property(\"status\");",
+									"});"
+								]
 							}
 						},
 						{
@@ -1528,6 +1541,30 @@
 				},
 				{
 					"name": "Start experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Experiment status is active\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql(\"active\");",
+									"});",
+									"",
+									"pm.test(\"Response contains experiment data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property(\"id\");",
+									"});"
+								]
+							}
+						}
+					],
 					"id": "44848164-4bc42086-64b8-41bf-8abb-bd85084d6788",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1570,6 +1607,30 @@
 				},
 				{
 					"name": "Stop experiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Experiment status is stopped\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql(\"stopped\");",
+									"});",
+									"",
+									"pm.test(\"Response contains experiment data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property(\"id\");",
+									"});"
+								]
+							}
+						}
+					],
 					"id": "44848164-39c32a6b-0642-44a4-94d0-2c712f2a3e45",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
